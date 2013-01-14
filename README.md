@@ -13,3 +13,10 @@ Installation
 ------------
 
 You will need to download and either put FlashPunk into the src folder or point to it if it's external.
+
+License
+-------
+
+This is licensed under Creative Commons Attribution Noncommercial ShareAlike.
+
+http://creativecommons.org/licenses/by-nc-sa/3.0/
