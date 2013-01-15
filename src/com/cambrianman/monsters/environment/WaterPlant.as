@@ -13,7 +13,7 @@ package com.cambrianman.monsters.environment
 	 */
 	public class WaterPlant extends Entity 
 	{
-		[Embed(source = "../gfx/environment/fire_plant.png")] private const IMGPLANT:Class;
+		[Embed(source = "../gfx/environment/water_plant.png")] private const IMGPLANT:Class;
 		
 		public function WaterPlant(x:Number=0, y:Number=0) 
 		{

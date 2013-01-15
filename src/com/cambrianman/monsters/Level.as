@@ -1,9 +1,8 @@
 package com.cambrianman.monsters 
 {
-	import com.cambrianman.monsters.environment.FirePlant;
+	import com.cambrianman.monsters.environment.*;
 	import com.cambrianman.monsters.items.*;
-	import com.cambrianman.monsters.monsters.Balloon;
-	import com.cambrianman.monsters.monsters.Monster;
+	import com.cambrianman.monsters.monsters.*;
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	import net.flashpunk.Entity;
@@ -271,10 +270,11 @@ package com.cambrianman.monsters
 			{
 				if (_i.@type == "firePlant")
 				{
-					var p:FirePlant = new FirePlant(_i.@x, _i.@y);
-					add(p);
-					environment.push(p);
-					spawnSeed(p);
+					spawnPlant(FirePlant, _i.@x, _i.@y);
+				}
+				else if (_i.@type == "waterPlant")
+				{
+					spawnPlant(WaterPlant, _i.@x, _i.@y);
 				}
 				else if (_i.@type == "balloonMonster")
 				{
@@ -282,8 +282,25 @@ package com.cambrianman.monsters
 					monsters.push(m);
 					add(m);
 				}
-				
 			}
+		}
+		
+		/**
+		 * Spawns a plant as well as its associated seed in the world.
+		 * @param	type	The class of the plant.
+		 * @param	x
+		 * @param	y
+		 */
+		private function spawnPlant(type:Class, x:Number, y:Number):void
+		{
+			var _p:* = new type(x, y);
+			add(_p);
+			environment.push(_p);
+			
+			if (type == FirePlant)
+				spawnSeed(_p, Item.FIRE);
+			else if (type == WaterPlant)
+				spawnSeed(_p, Item.WATER);
 		}
 		
 		/**
@@ -309,9 +326,15 @@ package com.cambrianman.monsters
 		 * @param	spawner	The plant that spwns this.
 		 * @param	type	The type of seed, Item.FIRE, Item.WATER, etc.
 		 */
-		public function spawnSeed(spawner:Entity, type:int = 1):void
+		public function spawnSeed(spawner:Entity, type:int):void
 		{
-			var seed:FireSeed = create(FireSeed, true) as FireSeed;
+			var seed:Item;
+			
+			if (type == Item.FIRE)
+				seed = create(FireSeed) as Item;
+			else if (type == Item.WATER)
+				seed = create(WaterSeed) as Item;
+			
 			seed.spawn(spawner, this);
 			add(seed);
 			if (items.indexOf(seed) == -1)

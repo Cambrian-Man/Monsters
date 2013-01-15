@@ -13,7 +13,7 @@ package com.cambrianman.monsters.items
 	public class Item extends Mobile 
 	{
 		public static var FIRE:int = 0;
-		public static var WATER:int = 0;
+		public static var WATER:int = 1;
 		
 				
 		protected var held:Boolean = false;
@@ -24,6 +24,15 @@ package com.cambrianman.monsters.items
 			super(level, x, y, graphic, mask);
 			
 			collidables = ["ground", "monster", "backgroundMonster"];
+			
+			width = 12;
+			height = 12;
+			
+			type = "item";
+			layer = 2;
+			
+			maxSpeed.x = 6;
+			maxSpeed.y = 2;
 		}
 		
 		override public function update():void
@@ -45,7 +54,7 @@ package com.cambrianman.monsters.items
 			this.level = level;
 			this.spawner = spawner;
 			x = spawner.x + 16;
-			y = spawner.y + 6;
+			y = spawner.y + 9;
 			speed.x = 0;
 			speed.y = 0;
 			acceleration.y = 0;
