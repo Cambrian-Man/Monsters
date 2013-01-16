@@ -22,6 +22,14 @@ package com.cambrianman.monsters.items
 			originX = -2;
 		}
 		
+		override public function update():void
+		{
+			super.update();
+			
+			if (held)
+				y = level.player.y + 8;
+		}
+		
 		override protected function onCollide(e:Entity):void
 		{
 			level.recycle(this);

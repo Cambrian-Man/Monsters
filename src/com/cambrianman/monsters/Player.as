@@ -29,7 +29,7 @@ package com.cambrianman.monsters
 		private var movementState:IMovementState;
 		
 		// An array of valid movement state classes.
-		private var movementClasses:Array = [Normal, Jumping, Clinging];
+		private var movementClasses:Array = [Normal, Jumping, Clinging, Pushing];
 		private var movementStates:Object = { };
 		
 		// A hash of integers representing the current control keys.
@@ -46,6 +46,8 @@ package com.cambrianman.monsters
 		public var held:Item;
 		
 		public var clinging:Monster;
+		
+		public var pushing:Mobile;
 		
 		public var cameraOffset:Number = 0;
 		
@@ -147,6 +149,19 @@ package com.cambrianman.monsters
 				else if (level.checkDamage(RIGHT, this))
 					damage(e, RIGHT);
 			}
+			
+			// Check to see if we've bumped into something pushable.
+			if (e is Mobile && (e as Mobile).pushable)
+			{
+				if (facing == RIGHT && e.x > x)
+					pushing = (e as Mobile);
+				else if (facing == LEFT && e.x < x)
+					pushing = (e as Mobile);
+				else
+					pushing = null;
+			}
+			else
+				pushing = null;
 			
 			super.moveCollideX(e);
 			return true;

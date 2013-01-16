@@ -13,7 +13,7 @@ package com.cambrianman.monsters.movementStates
 	import net.flashpunk.FP;
 	
 	/**
-	 * ...
+	 * Normal movement state, when the player is on the ground.
 	 * @author Evan Furchtgott
 	 */
 	public class Normal implements IMovementState 
@@ -25,11 +25,16 @@ package com.cambrianman.monsters.movementStates
 		private var lookUpTimer:TriggerTimer;
 		private var lookTween:NumTween;
 		
+		private var pushTimer:TriggerTimer;
+		private var playerPushing:Boolean = false;
+		
 		public function Normal() 
 		{
 			lookTween = new NumTween();
 			lookDownTimer = new TriggerTimer(1, lookDown);
 			lookUpTimer = new TriggerTimer(1, lookUp);
+			
+			pushTimer = new TriggerTimer(0.5, push, unpush);
 		}
 		
 		/* INTERFACE com.cambrianman.monsters.IMovementState */
@@ -70,8 +75,11 @@ package com.cambrianman.monsters.movementStates
 					lookDownTimer.check(false);
 					lookNormal();
 				}
-					
 				
+				pushTimer.check(checkPushing(keys));
+				
+				if (playerPushing)
+					return Pushing;
 				
 				if (Input.pressed(keys.jump))
 					return Jumping;
@@ -111,6 +119,48 @@ package com.cambrianman.monsters.movementStates
 		{
 			lookTween.active = false;
 			player.cameraOffset = 0;
+		}
+		
+		/**
+		 * Checks that we are still holding the key down to push in the right direction.
+		 * @param	keys
+		 * @return
+		 */
+		private function checkPushing(keys:Object):Boolean
+		{
+			if (player.pushing == null)
+				return false;
+				
+			if (player.facing == Mobile.RIGHT)
+			{
+				if (Input.released(keys.right) || !Input.check(keys.right))
+					return false;
+				else if (player.x > player.pushing.x)
+					return false;
+				else
+					return true;
+			}
+			else if (player.facing == Mobile.LEFT)
+			{
+				if (Input.released(keys.left) || !Input.check(keys.left))
+					return false;
+				else if (player.x < player.pushing.x)
+					return false;
+				else
+					return true;
+			}
+			
+			return false;
+		}
+		
+		private function push():void
+		{
+			playerPushing = true;
+		}
+		
+		private function unpush():void
+		{
+			playerPushing = false;
 		}
 		
 		protected function handleAnimation(keys:Object):void

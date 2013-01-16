@@ -38,6 +38,9 @@ package com.cambrianman.monsters
 		// the mobile should collide with.
 		public var collidables:Array;
 		
+		// Can we push this object and trigge the pushing state?
+		public var pushable:Boolean = false;
+		
 		/**
 		 * Constructor
 		 * @param	level		A reference to the current level.
@@ -93,6 +96,20 @@ package com.cambrianman.monsters
 		override public function moveCollideY(e:Entity):Boolean {
 			speed.y = 0;
 			return true;
+		}
+		
+		public function push(direction:int, amount:Number):void
+		{
+			switch (direction) 
+			{
+				case RIGHT:
+					moveBy(amount, 0, collidables);
+				break;
+				case LEFT:
+					moveBy((amount * -1), 0, collidables);
+				break;
+				default:
+			}
 		}
 		
 		/**
