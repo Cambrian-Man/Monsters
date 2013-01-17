@@ -190,7 +190,16 @@ package com.cambrianman.monsters.movementStates
 			if (Input.pressed(keys.interact))
 			{
 				if (player.held)
-					(player.held as Item).toss();
+				{
+					if (Input.check(keys.up))
+						(player.held as Item).toss(Mobile.UP);
+					else if (Input.check(keys.down))
+						(player.held as Item).toss(Mobile.DOWN);
+					else if (player.facing == Mobile.LEFT)
+						(player.held as Item).toss(Mobile.LEFT);
+					else if (player.facing == Mobile.RIGHT)
+						(player.held as Item).toss(Mobile.RIGHT);
+				}
 				else
 				{
 					var i:Entity = player.collide("item", player.x, player.y);

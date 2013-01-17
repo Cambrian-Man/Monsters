@@ -11,7 +11,7 @@ package com.cambrianman.monsters.environment
 	 * ...
 	 * @author Evan Furchtgott
 	 */
-	public class FirePlant extends Entity 
+	public class FirePlant extends Entity
 	{
 		[Embed(source = "../gfx/environment/fire_plant.png")] private const IMGPLANT:Class;
 		

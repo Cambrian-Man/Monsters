@@ -276,6 +276,14 @@ package com.cambrianman.monsters
 				{
 					spawnPlant(WaterPlant, _i.@x, _i.@y);
 				}
+				else if (_i.@type == "fireRoot")
+				{
+					(spawnPlant(FireRoot, _i.@x, _i.@y) as Root).level = this;
+				}
+				else if (_i.@type == "waterRoot")
+				{
+					(spawnPlant(WaterRoot, _i.@x, _i.@y) as Root).level = this;
+				}
 				else if (_i.@type == "balloonMonster")
 				{
 					var m:Balloon = new Balloon(this, _i.@x, _i.@y);
@@ -283,6 +291,8 @@ package com.cambrianman.monsters
 					add(m);
 				}
 			}
+			
+			addList(environment);
 		}
 		
 		/**
@@ -291,16 +301,17 @@ package com.cambrianman.monsters
 		 * @param	x
 		 * @param	y
 		 */
-		private function spawnPlant(type:Class, x:Number, y:Number):void
+		private function spawnPlant(type:Class, x:Number, y:Number):Entity
 		{
 			var _p:* = new type(x, y);
-			add(_p);
 			environment.push(_p);
 			
 			if (type == FirePlant)
 				spawnSeed(_p, Item.FIRE);
 			else if (type == WaterPlant)
 				spawnSeed(_p, Item.WATER);
+				
+			return _p;
 		}
 		
 		/**
@@ -330,10 +341,21 @@ package com.cambrianman.monsters
 		{
 			var seed:Item;
 			
-			if (type == Item.FIRE)
-				seed = create(FireSeed) as Item;
-			else if (type == Item.WATER)
-				seed = create(WaterSeed) as Item;
+			switch (type) 
+			{
+				case Item.FIRE:
+					seed = create(FireSeed) as Item;
+				break;
+				case Item.WATER:
+					seed = create(WaterSeed) as Item;
+				break;
+				case Item.FIREDROP:
+					seed = create(FireDrop) as Item;
+				break;
+				case Item.WATERDROP:
+					seed = create(WaterDrop) as Item;
+				break;
+			}
 			
 			seed.spawn(spawner, this);
 			add(seed);

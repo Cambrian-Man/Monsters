@@ -4,6 +4,7 @@ package com.cambrianman.monsters.items
 	import com.cambrianman.monsters.monsters.Monster;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Spritemap;
+	import com.cambrianman.monsters.Level;
 	
 	/**
 	 * ...
@@ -38,6 +39,13 @@ package com.cambrianman.monsters.items
 			if (e is Monster) {
 				(e as Monster).onWater();
 			}
+		}
+		
+		override public function spawn(spawner:Entity, level:Level):void
+		{
+			super.spawn(spawner, level);
+			x += 16;
+			y += 9;
 		}
 	}
 

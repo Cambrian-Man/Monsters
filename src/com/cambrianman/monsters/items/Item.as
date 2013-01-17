@@ -15,6 +15,8 @@ package com.cambrianman.monsters.items
 		public static var FIRE:int = 0;
 		public static var WATER:int = 1;
 		
+		public static var FIREDROP:int = 10;
+		public static var WATERDROP:int = 11;
 				
 		protected var held:Boolean = false;
 		protected var spawner:Entity;
@@ -53,11 +55,12 @@ package com.cambrianman.monsters.items
 		{
 			this.level = level;
 			this.spawner = spawner;
-			x = spawner.x + 16;
-			y = spawner.y + 9;
+			x = spawner.x;
+			y = spawner.y;
 			speed.x = 0;
 			speed.y = 0;
 			acceleration.y = 0;
+			maxSpeed.y = 10;
 		}
 		
 		public function grab():void
@@ -66,14 +69,25 @@ package com.cambrianman.monsters.items
 			held = true;
 		}
 		
-		public function toss():void
+		public function toss(direction:int):void
 		{
 			held = false;
 			level.player.held = null;
-			if (level.player.facing == RIGHT)
-				speed.x = 6;
-			else
-				speed.x = -6;
+			switch (direction) 
+			{
+				case Mobile.LEFT:
+					speed.x = -6;
+				break;
+				case Mobile.RIGHT:
+					speed.x = 6;
+				break;
+				case Mobile.UP:
+					speed.y = -6;
+				break;
+				case Mobile.DOWN:
+					speed.y = 6;
+				break;
+			}
 				
 			acceleration.y = 0.1;
 		}

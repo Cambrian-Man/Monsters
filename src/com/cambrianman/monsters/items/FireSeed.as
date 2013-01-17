@@ -38,6 +38,13 @@ package com.cambrianman.monsters.items
 				(e as Monster).onFire();
 			}
 		}
+		
+		override public function spawn(spawner:Entity, level:Level):void
+		{
+			super.spawn(spawner, level);
+			x += 16;
+			y += 9;
+		}
 	}
 
 }
