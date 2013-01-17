@@ -107,6 +107,15 @@ package com.cambrianman.monsters
 				movementState.exit();
 				setMovementStateByClass(s);
 			}
+			
+			// If we're not facing the thing we're pushing, we can't be pushing.
+			if (pushing)
+			{
+				if (facing == RIGHT && x > pushing.x)
+					pushing = null;
+				else if (facing == LEFT && x < pushing.x)
+					pushing = null;
+			}
 		}
 		
 		/**
@@ -162,7 +171,6 @@ package com.cambrianman.monsters
 			}
 			else
 				pushing = null;
-			
 			super.moveCollideX(e);
 			return true;
 		}

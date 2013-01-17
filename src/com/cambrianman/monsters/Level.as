@@ -265,33 +265,36 @@ package com.cambrianman.monsters
 			items = new Vector.<Item>();
 			environment = new Vector.<Entity>();
 			monsters = new Vector.<Monster>();
-
+	
+			var _m:Monster;
 			for each (var _i:XML in levelData.objectgroup.(@name == "Spawns").object)
 			{
-				if (_i.@type == "firePlant")
+				switch (_i.@type.toString()) 
 				{
-					spawnPlant(FirePlant, _i.@x, _i.@y);
-				}
-				else if (_i.@type == "waterPlant")
-				{
-					spawnPlant(WaterPlant, _i.@x, _i.@y);
-				}
-				else if (_i.@type == "fireRoot")
-				{
-					(spawnPlant(FireRoot, _i.@x, _i.@y) as Root).level = this;
-				}
-				else if (_i.@type == "waterRoot")
-				{
-					(spawnPlant(WaterRoot, _i.@x, _i.@y) as Root).level = this;
-				}
-				else if (_i.@type == "balloonMonster")
-				{
-					var m:Balloon = new Balloon(this, _i.@x, _i.@y);
-					monsters.push(m);
-					add(m);
+					case "firePlant":
+						spawnPlant(FirePlant, _i.@x, _i.@y);
+					break;
+					case "waterPlant":
+						spawnPlant(WaterPlant, _i.@x, _i.@y);
+					break;
+					case "fireRoot":
+						(spawnPlant(FireRoot, _i.@x, _i.@y) as Root).level = this;
+					break;
+					case "waterRoot":
+						(spawnPlant(WaterRoot, _i.@x, _i.@y) as Root).level = this;
+					break;
+					case "balloonMonster":
+						_m = new Balloon(this, _i.@x, _i.@y);
+						monsters.push(_m);
+					break;
+					case "blockMonster":
+						_m = new Block(this, _i.@x, _i.@y);
+						monsters.push(_m);
+					break;
 				}
 			}
 			
+			addList(monsters);
 			addList(environment);
 		}
 		
