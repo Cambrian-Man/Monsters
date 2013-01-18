@@ -41,6 +41,7 @@ package com.cambrianman.monsters
 		private var tileLayers:Vector.<Entity>;
 		
 		private var damagers:Vector.<int>;
+		private var solids:Array;
 		
 		private var exits:Vector.<Entity>;
 		private var entrances:Object;
@@ -147,6 +148,11 @@ package com.cambrianman.monsters
 			return (ground.graphic as Tilemap).getTile(Math.floor(x / 16), Math.floor(y / 16));
 		}
 		
+		public function isSolidTile(x:Number, y:Number):Boolean
+		{
+			return (solids.indexOf(getTileByLoc(x, y)) > -1); 
+		}
+		
 		/**
 		 * Our primary level load function.
 		 * @param	data		A reference to the embedded level data.
@@ -168,11 +174,11 @@ package com.cambrianman.monsters
 			levelHeight = levelData.@height * _tileset.@tileheight;
 
 			// Load in our special tiles, the ones that are solid or that damage.
-			var _solids:Array = new Array();
+			solids = new Array();
 			for each (var _t:XML in _tileset.(@name == "tiles").tile)
 			{
 				if (_t..property.(@name == "solid").@value == "true" ) 
-					_solids.push(int(_t.@id));
+					solids.push(int(_t.@id));
 				
 				if (_t..property.(@name == "damage").@value == "true" )
 					damagers.push(int(_t.@id));
@@ -194,7 +200,7 @@ package com.cambrianman.monsters
 				var _entity:Entity;
 				if (_l.@name == "Ground")
 				{
-					_entity = new Entity(0, 0, _tilemap, _tilemap.createGrid(_solids));
+					_entity = new Entity(0, 0, _tilemap, _tilemap.createGrid(solids));
 					_entity.type = "ground";
 					ground = _entity;
 				}
