@@ -28,6 +28,11 @@ package com.cambrianman.monsters.movementStates
 		
 		public function update(keys:Object):Class 
 		{
+			// If we're not clinging for some reason (say, the monster stop being grabbable)
+			// return to normal.
+			if (!player.clinging)
+				return Normal;
+				
 			// When we're clinging, we ignore our normal movement
 			// and attach to the clung-to monster.
 			player.y = player.clinging.y + 24;

@@ -2,6 +2,8 @@ package com.cambrianman.monsters.monsters
 {
 	import com.cambrianman.monsters.Level;
 	import com.cambrianman.monsters.Mobile;
+	import com.cambrianman.monsters.Player;
+	import net.flashpunk.Entity;
 	import net.flashpunk.Graphic;
 	import net.flashpunk.Mask;
 	
@@ -35,7 +37,6 @@ package com.cambrianman.monsters.monsters
 		{
 			
 		}
-		
 	}
 
 }

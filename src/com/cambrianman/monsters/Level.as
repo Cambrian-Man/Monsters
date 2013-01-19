@@ -68,7 +68,7 @@ package com.cambrianman.monsters
 			
 			damagers = new Vector.<int>;
 			
-			loadLevel(Levels.test, "gameStart");
+			loadLevel(Levels.start, "gameStart");
 		}
 		
 		override public function update():void

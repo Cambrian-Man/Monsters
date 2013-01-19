@@ -11,6 +11,8 @@ package com.cambrianman.monsters
 		public static const list:Object = new Object();
 		[Embed(source = "levels/test.tmx", mimeType = "application/octet-stream")] public static const test:Class;
 		[Embed(source = "levels/test2.tmx", mimeType = "application/octet-stream")] public static const test2:Class;
+		[Embed(source = "levels/start.tmx", mimeType = "application/octet-stream")] public static const start:Class;
+		[Embed(source = "levels/balloonIntro.tmx", mimeType = "application/octet-stream")] public static const balloonIntro:Class;
 		public function Levels() 
 		{
 			

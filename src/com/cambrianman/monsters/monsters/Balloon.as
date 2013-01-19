@@ -2,6 +2,7 @@ package com.cambrianman.monsters.monsters
 {
 	import com.cambrianman.monsters.Level;
 	import flash.display.Sprite;
+	import net.flashpunk.Entity;
 	import net.flashpunk.Graphic;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
@@ -29,6 +30,8 @@ package com.cambrianman.monsters.monsters
 			maxSpeed.x = 10;
 			maxSpeed.y = 10;
 			
+			width = 32;
+			
 			beNormal();
 		}
 		
@@ -40,6 +43,10 @@ package com.cambrianman.monsters.monsters
 			{
 				if (collide("player", x, y - 1))
 					(graphic as Spritemap).play("squish");
+				else if (speed.y > 0 && collide("player", x, y + 1))
+				{
+					level.player.y = top - level.player.height;
+				}
 				else
 					(graphic as Spritemap).play("idle");
 			}
@@ -56,7 +63,6 @@ package com.cambrianman.monsters.monsters
 				return;
 				
 			y -= 16;
-			width = 32;
 			height = 32;
 			acceleration.y = 0;
 			setOrigin();
@@ -70,19 +76,19 @@ package com.cambrianman.monsters.monsters
 		private function beNormal():void
 		{
 			state = NORMAL;
-			width = 28;
 			originX = -2;
 			height = 16;
 			originY = -16;
 			
 			acceleration.y = 0.2;
 			pushable = false;
+			level.player.clinging = null;
+			type = "monster";
 		}
 		
 		override public function onWater():void
 		{
 			(graphic as Spritemap).play("frozen");
-			width = 32;
 			originX = 0;
 			if (state == WATER)
 				return;
@@ -94,6 +100,18 @@ package com.cambrianman.monsters.monsters
 			
 			state = WATER;
 			pushable = true;
+		}
+		
+		override public function damage(e:Entity, direction:int = 0):void
+		{
+			if (state == FIRE)
+			{
+				beNormal();
+			}
+			else if (state == NORMAL)
+			{
+				// Should do something to delete.
+			}
 		}
 	}
 

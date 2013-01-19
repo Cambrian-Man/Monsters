@@ -89,11 +89,29 @@ package com.cambrianman.monsters
 		}
 		
 		override public function moveCollideX(e:Entity):Boolean {
+			// Checks to see if we've bumped into any damaging tiles to the left or right.
+			if (e == level.ground)
+			{
+				if (level.checkDamage(LEFT, this))
+					damage(e, LEFT);
+				else if (level.checkDamage(RIGHT, this))
+					damage(e, RIGHT);
+			}
+			
 			speed.x = 0;
 			return true;
 		}
 		
 		override public function moveCollideY(e:Entity):Boolean {
+			// Check to see if we've bumped into any damaging tiles above or below.
+			if (e == level.ground)
+			{
+				if (level.checkDamage(DOWN, this))
+					damage(e, DOWN);
+				else if (level.checkDamage(UP, this))
+					damage(e, UP);
+			}
+			
 			speed.y = 0;
 			return true;
 		}
