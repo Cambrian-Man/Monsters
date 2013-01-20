@@ -51,6 +51,11 @@ package com.cambrianman.monsters
 		
 		public var cameraOffset:Number = 0;
 		
+		public var checkpoint:Object = {
+			level: null,
+			entrance: null
+		};
+		
 		/**
 		 * Constructor
 		 * @param	level	Pass in a level reference, for convenience.
@@ -164,6 +169,12 @@ package com.cambrianman.monsters
 				pushing = null;
 			super.moveCollideX(e);
 			return true;
+		}
+		
+		override public function damage(e:Entity, direction:int=0):void
+		{
+			level.loadLevel(checkpoint.level, checkpoint.entrance);
+			super.damage(e, direction);
 		}
 	}
 

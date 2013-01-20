@@ -13,8 +13,8 @@ package com.cambrianman.monsters.monsters
 	 */
 	public class Monster extends Mobile 
 	{
-		public static const NORMAL:int = 0;
-		public static const FIRE:int = 1;
+		public static const FIRE:int = 0;
+		public static const NORMAL:int = 1;
 		public static const WATER:int = 2;
 		
 		public var state:int;
@@ -30,12 +30,24 @@ package com.cambrianman.monsters.monsters
 		
 		public function onFire():void
 		{
-			
+			if (state != FIRE)
+				state -= 1;
 		}
 		
 		public function onWater():void
 		{
-			
+			if (state != WATER)
+				state += 1;
+		}
+		
+		public function setState(state:String):void
+		{
+			if (state == "water") 
+				this.state = Monster.WATER;
+			else if (state == "fire") 
+				this.state = Monster.FIRE;
+			else 
+				this.state = Monster.NORMAL;
 		}
 	}
 

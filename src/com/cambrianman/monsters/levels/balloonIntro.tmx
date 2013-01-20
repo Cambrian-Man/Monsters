@@ -106,11 +106,18 @@
     <property name="to" value="start"/>
    </properties>
   </object>
+  <object type="exit" x="688" y="432" width="32" height="16">
+   <properties>
+    <property name="entrance" value="top"/>
+    <property name="from" value="up"/>
+    <property name="to" value="descent"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="Spawns" width="60" height="28">
-  <object type="balloonMonster" x="272" y="368" width="48" height="32"/>
+  <object type="balloonMonster" x="280" y="368" width="32" height="32"/>
   <object type="firePlant" x="128" y="336" width="48" height="48"/>
-  <object type="balloonMonster" x="608" y="320" width="48" height="32"/>
+  <object type="balloonMonster" x="616" y="320" width="32" height="32"/>
   <object type="firePlant" x="496" y="336" width="48" height="48"/>
   <object type="fireRoot" x="816" y="32" width="32" height="32"/>
   <object type="balloonMonster" x="720" y="304" width="48" height="32"/>

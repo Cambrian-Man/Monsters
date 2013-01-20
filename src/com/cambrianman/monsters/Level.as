@@ -68,7 +68,10 @@ package com.cambrianman.monsters
 			
 			damagers = new Vector.<int>;
 			
-			loadLevel(Levels.start, "gameStart");
+			player.checkpoint.level = Levels.start
+			player.checkpoint.entrance = "gameStart";
+			
+			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 		}
 		
 		override public function update():void
@@ -79,7 +82,11 @@ package com.cambrianman.monsters
 			if (_e)
 			{
 				if (_e.from != player.facing)
+				{
+					player.checkpoint.level = _e.to;
+					player.checkpoint.entrance = _e.entrance;
 					loadLevel(_e.to, _e.entrance);
+				}
 			}
 			updateCamera();
 		}
@@ -158,7 +165,7 @@ package com.cambrianman.monsters
 		 * @param	data		A reference to the embedded level data.
 		 * @param	entrance	Which entrance to set the player to.
 		 */
-		private function loadLevel(data:Class, entrance:String):void
+		public function loadLevel(data:Class, entrance:String):void
 		{	
 			// Clear the old stuff.
 			if (exits)
@@ -236,6 +243,10 @@ package com.cambrianman.monsters
 						exit.from = Mobile.LEFT;
 					else if (_e..property.(@name == "from").@value == "right")
 						exit.from = Mobile.RIGHT;
+					else if (_e..property.(@name == "from").@value == "up")
+						exit.from = Mobile.UP;
+					else if (_e..property.(@name == "from").@value == "down")
+						exit.from = Mobile.DOWN;
 					
 					exits.push(exit);
 				}
@@ -295,6 +306,18 @@ package com.cambrianman.monsters
 					break;
 					case "blockMonster":
 						_m = new Block(this, _i.@x, _i.@y);
+						(_m as Block).setSize(_i..property.(@name == "size").@value);
+						monsters.push(_m);
+					break;
+					case "pushyMonster":
+						_m = new Pushy(this, _i.@x, _i.@y);
+						if (_i..property.(@name == "facing").@value == "left")
+							(_m as Pushy).facing = Mobile.LEFT;
+						else
+							(_m as Pushy).facing = Mobile.RIGHT;
+						
+						_m.setState(_i..property.(@name == "state").@value);
+						
 						monsters.push(_m);
 					break;
 				}

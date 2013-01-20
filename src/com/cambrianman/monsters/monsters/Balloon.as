@@ -28,7 +28,7 @@ package com.cambrianman.monsters.monsters
 			super(level, x, y, graphic, mask);
 			
 			maxSpeed.x = 10;
-			maxSpeed.y = 10;
+			maxSpeed.y = 8;
 			
 			width = 32;
 			
@@ -82,7 +82,8 @@ package com.cambrianman.monsters.monsters
 			
 			acceleration.y = 0.2;
 			pushable = false;
-			level.player.clinging = null;
+			if (level.player.clinging == this)
+				level.player.clinging = null;
 			type = "monster";
 		}
 		

@@ -38,8 +38,6 @@ package com.cambrianman.monsters.monsters
 			acceleration.y = 0.2;
 			maxSpeed.y = 10;
 			beNormal();
-			(graphic as Spritemap).play("medium");
-			
 		}
 		
 		override public function update():void
@@ -65,9 +63,31 @@ package com.cambrianman.monsters.monsters
 			}
 			
 			shrink();
-			width = 16;
-			height = 16;
-			state = FIRE;
+		}
+		
+		public function setSize(size:String):void
+		{
+			switch (size) 
+			{
+				case "small":
+					width = 16;
+					height = 16;
+					(graphic as Spritemap).play("small");
+					state = FIRE;
+				break;
+				case "medium":
+					width = 32;
+					height = 32;
+					(graphic as Spritemap).play("medium");
+					state = NORMAL;
+				break;
+				case "large":
+					width = 48;
+					height = 48;
+					(graphic as Spritemap).play("large");
+					state = WATER;
+				break;
+			}
 		}
 		
 		override public function onWater():void
@@ -86,18 +106,11 @@ package com.cambrianman.monsters.monsters
 			}
 			
 			grow();
-			
-			width = 48;
-			height = 48;
-			state = WATER;
 		}
 		
 		private function beNormal():void
-		{	
-			width = 32;
-			height = 32;
+		{
 			setOrigin(0, 0);
-			state = NORMAL;
 		}
 		
 		private function grow():void
@@ -107,6 +120,8 @@ package com.cambrianman.monsters.monsters
 			
 			graphicTween.tween((graphic as Spritemap), { scale: 1.5 }, 0.1 );
 			graphicTween.start();
+			
+			state += 1;
 		}
 		
 		private function shrink():void
@@ -116,16 +131,18 @@ package com.cambrianman.monsters.monsters
 			
 			graphicTween.tween((graphic as Spritemap), { scale: 0.66 }, 0.1 );
 			graphicTween.start();
+			
+			state -= 1;
 		}
 		
 		private function sizeComplete():void
-		{
+		{	
 			if (state == WATER)
-				(graphic as Spritemap).play("large");
+				setSize("large");
 			else if (state == NORMAL)
-				(graphic as Spritemap).play("medium");
+				setSize("medium");
 			else if (state == FIRE)
-				(graphic as Spritemap).play("small");
+				setSize("small");
 				
 			(graphic as Spritemap).scale = 1;
 		}

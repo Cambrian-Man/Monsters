@@ -91,7 +91,7 @@ package com.cambrianman.monsters.movementStates
 		public function enter():void
 		{
 			player.maxSpeed.x = 2.25;
-			player.maxSpeed.y = 8;
+			player.maxSpeed.y = 6.5;
 			
 			player.drag.x = 0.3;
 			

@@ -119,6 +119,16 @@
   <object type="waterPlant" x="144" y="64" width="48" height="48"/>
   <object type="fireRoot" x="208" y="320" width="32" height="32"/>
   <object type="waterRoot" x="272" y="320" width="32" height="32"/>
-  <object type="blockMonster" x="248" y="16" width="32" height="32"/>
+  <object type="blockMonster" x="256" y="96" width="48" height="48">
+   <properties>
+    <property name="size" value="large"/>
+   </properties>
+  </object>
+  <object type="pushyMonster" x="352" y="80" width="32" height="32">
+   <properties>
+    <property name="facing" value="left"/>
+    <property name="state" value="normal"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
