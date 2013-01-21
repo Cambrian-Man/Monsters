@@ -32,6 +32,7 @@ package com.cambrianman.monsters.items
 		
 		override protected function onCollide(e:Entity):void
 		{
+			level.particles.burstAt(x, y, FIRE);
 			level.recycle(this);
 			
 			if (e is Monster)

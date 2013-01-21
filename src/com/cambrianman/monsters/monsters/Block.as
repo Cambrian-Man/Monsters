@@ -1,6 +1,8 @@
 package com.cambrianman.monsters.monsters 
 {
 	import com.cambrianman.monsters.Level;
+	import com.cambrianman.monsters.items.Item;
+	import com.cambrianman.monsters.Mobile;
 	import net.flashpunk.Entity;
 	import net.flashpunk.Graphic;
 	import net.flashpunk.graphics.Spritemap;
@@ -22,7 +24,7 @@ package com.cambrianman.monsters.monsters
 		
 		public function Block(level:Level, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) 
 		{
-			graphic = new Spritemap(IMGBLOCK, 48, 48)
+			graphic = new Spritemap(IMGBLOCK, 48, 48);
 			super(level, x, y, graphic, mask);
 			(graphic as Spritemap).add("small", [0]);
 			(graphic as Spritemap).add("medium", [1]);
@@ -38,6 +40,8 @@ package com.cambrianman.monsters.monsters
 			acceleration.y = 0.2;
 			maxSpeed.y = 10;
 			beNormal();
+			
+			collidables = ["ground", "monster", "player"];
 		}
 		
 		override public function update():void
@@ -57,11 +61,13 @@ package com.cambrianman.monsters.monsters
 				return;
 			else if (state == WATER)
 			{
+				level.particles.smokeAt(centerX, centerY, Item.FIRE);
 				beNormal();
 				shrink();
 				return;
 			}
 			
+			level.particles.smokeAt(centerX, centerY, Item.FIRE);
 			shrink();
 		}
 		
@@ -92,20 +98,20 @@ package com.cambrianman.monsters.monsters
 		
 		override public function onWater():void
 		{
+			if (state == WATER)
+				return
+			
 			if (state == FIRE)
 			{
-				grow();
 				beNormal();
-				return;
 			}
-			else if (state == WATER)
+				
+			var growDir:int = canGrow();
+			if (growDir == Mobile.NONE)
 				return;
-			else if (!hasRoom())
-			{
-				return;
-			}
 			
-			grow();
+			level.particles.smokeAt(centerX, centerY, Item.WATER);
+			grow(growDir);
 		}
 		
 		private function beNormal():void
@@ -113,9 +119,17 @@ package com.cambrianman.monsters.monsters
 			setOrigin(0, 0);
 		}
 		
-		private function grow():void
+		private function grow(direction:int):void
 		{
-			sizeTween.tween(this, { x: x - 8, y: y - 16 }, 0.1);
+			var _x:Number;
+			if (direction == Mobile.UP)
+				_x = x - 8;
+			else if (direction == Mobile.RIGHT)
+				_x = x;
+			else if (direction == Mobile.LEFT)
+				_x = x - 16;
+			
+			sizeTween.tween(this, { x: _x, y: y - 16 }, 0.1);
 			sizeTween.start();
 			
 			graphicTween.tween((graphic as Spritemap), { scale: 1.5 }, 0.1 );
@@ -148,30 +162,31 @@ package com.cambrianman.monsters.monsters
 		}
 		
 		/**
-		 * Checks to see if it is possible to grow in the current location.
+		 * Checks to see which way the object can grow.
 		 * @return
 		 */
-		private function hasRoom():Boolean
+		private function canGrow():int
 		{
-			// The width of the hitbox plus the two corners.
-			var topBlocks:int = (width / 16) + 2;
-			var sideBlocks:int = (height / 16);
+			var direction:int = Mobile.NONE;
+			width += 16;
+			height += 16;
 			
-			for (var i:int = 0; i < topBlocks; i++) 
+			if (!collideTypes(collidables, x - 8, y - 16))
 			{
-				if (level.isSolidTile((x - 16) + (i * 16), top - 16))
-					return false;
+				direction = Mobile.UP;
+			}
+			else if (!collideTypes(collidables, x, y - 16))
+			{
+				direction = Mobile.RIGHT;
+			}
+			else if (!collideTypes(collidables, x - 16, y - 16))
+			{
+				direction = Mobile.LEFT;
 			}
 			
-			for (i = 0; i < sideBlocks; i++) 
-			{
-				if (level.isSolidTile((x - 16), top  + (i * 16)))
-					return false;
-				else if (level.isSolidTile((right + 16), top  + (i * 16)))
-					return false;
-			}
-			
-			return true;
+			width -= 16;
+			height -= 16;
+			return direction;
 		}
 	}
 

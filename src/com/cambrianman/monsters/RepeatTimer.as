@@ -13,6 +13,7 @@ package com.cambrianman.monsters
 		
 		private var remaining:Number;
 		
+		// TODO: Maybe make this a tweener subclass.
 		public function RepeatTimer(delay:Number, callback:Function, callbackProps:Object=null) 
 		{
 			this.delay = delay;

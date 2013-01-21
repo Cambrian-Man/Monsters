@@ -7,6 +7,7 @@ package com.cambrianman.monsters.monsters
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Mask;
+	import com.cambrianman.monsters.items.Item;
 	
 	/**
 	 * Balloon Monster
@@ -56,6 +57,7 @@ package com.cambrianman.monsters.monsters
 		{
 			if (state == WATER)
 			{
+				level.particles.smokeAt(centerX, centerY, Item.FIRE);
 				beNormal();
 				return;
 			}
@@ -69,6 +71,7 @@ package com.cambrianman.monsters.monsters
 			state = FIRE;
 			type = "backgroundMonster";
 			(graphic as Spritemap).play("inflated");
+			level.particles.smokeAt(centerX, centerY, Item.FIRE);
 			speed.y = -0.6;
 			pushable = false;
 		}
@@ -76,7 +79,6 @@ package com.cambrianman.monsters.monsters
 		private function beNormal():void
 		{
 			state = NORMAL;
-			originX = -2;
 			height = 16;
 			originY = -16;
 			
@@ -95,10 +97,12 @@ package com.cambrianman.monsters.monsters
 				return;
 			else if (state == FIRE)
 			{
+				level.particles.smokeAt(centerX, centerY, Item.WATER);
 				beNormal();
 				return;
 			}
 			
+			level.particles.smokeAt(centerX, centerY, Item.WATER);
 			state = WATER;
 			pushable = true;
 		}

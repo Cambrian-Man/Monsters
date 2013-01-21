@@ -27,8 +27,9 @@ package com.cambrianman.monsters.items
 			
 			collidables = ["ground", "monster", "backgroundMonster"];
 			
-			width = 12;
-			height = 12;
+			width = 8;
+			height = 8;
+			setOrigin( -4, -4);
 			
 			type = "item";
 			layer = 2;
@@ -44,9 +45,9 @@ package com.cambrianman.monsters.items
 				y = level.player.y + 4;
 				
 				if (level.player.facing == RIGHT)
-					x = level.player.x + width;
+					x = level.player.right - 4;
 				else
-					x = level.player.x;		
+					x = level.player.x - 4;		
 			}
 			super.update();
 		}

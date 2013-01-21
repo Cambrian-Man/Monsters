@@ -51,6 +51,8 @@ package com.cambrianman.monsters
 		
 		private var environment:Vector.<Entity>;
 		
+		public var particles:ParticleSystem;
+		
 		public function Level() 
 		{
 			player = new Player(this);
@@ -68,10 +70,13 @@ package com.cambrianman.monsters
 			
 			damagers = new Vector.<int>;
 			
-			player.checkpoint.level = Levels.start
+			player.checkpoint.level = Levels.test
 			player.checkpoint.entrance = "gameStart";
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
+			
+			particles = new ParticleSystem();
+			add(particles);
 		}
 		
 		override public function update():void

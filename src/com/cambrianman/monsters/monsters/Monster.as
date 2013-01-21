@@ -3,6 +3,7 @@ package com.cambrianman.monsters.monsters
 	import com.cambrianman.monsters.Level;
 	import com.cambrianman.monsters.Mobile;
 	import com.cambrianman.monsters.Player;
+	import com.cambrianman.monsters.items.Item;
 	import net.flashpunk.Entity;
 	import net.flashpunk.Graphic;
 	import net.flashpunk.Mask;
@@ -30,12 +31,15 @@ package com.cambrianman.monsters.monsters
 		
 		public function onFire():void
 		{
+			level.particles.smokeAt(centerX, centerY, Item.FIRE);
 			if (state != FIRE)
 				state -= 1;
 		}
 		
 		public function onWater():void
 		{
+			level.particles.smokeAt(centerX, centerY, Item.WATER);
+			
 			if (state != WATER)
 				state += 1;
 		}

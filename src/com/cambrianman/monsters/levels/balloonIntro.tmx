@@ -119,7 +119,7 @@
   <object type="firePlant" x="128" y="336" width="48" height="48"/>
   <object type="balloonMonster" x="616" y="320" width="32" height="32"/>
   <object type="firePlant" x="496" y="336" width="48" height="48"/>
-  <object type="fireRoot" x="816" y="32" width="32" height="32"/>
+  <object type="fireRoot" x="824" y="32" width="32" height="32"/>
   <object type="balloonMonster" x="720" y="304" width="48" height="32"/>
   <object type="waterPlant" x="688" y="176" width="48" height="48"/>
  </objectgroup>

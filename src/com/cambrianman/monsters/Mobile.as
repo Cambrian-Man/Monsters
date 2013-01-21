@@ -29,6 +29,7 @@ package com.cambrianman.monsters
 		protected var level:Level;
 		
 		// Constants referring to various facing directions.
+		public static const NONE:int = -1;
 		public static const LEFT:int = 0;
 		public static const UP:int = 1;
 		public static const RIGHT:int = 2;

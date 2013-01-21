@@ -5,6 +5,7 @@ package com.cambrianman.monsters.monsters
 	import net.flashpunk.Entity;
 	import net.flashpunk.Graphic;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Mask;
 	
 	/**
@@ -18,9 +19,15 @@ package com.cambrianman.monsters.monsters
 		
 		public function Pushy(level:Level, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) 
 		{
-			super(level, x, y, new Image(IMGPUSHY), mask);
+			graphic = new Spritemap(IMGPUSHY, 32, 16);
+			super(level, x, y, graphic);
 			width = 32;
-			height = 32;
+			height = 16;
+
+			(graphic as Spritemap).add("normal", [0]);
+			(graphic as Spritemap).add("water", [1]);
+			(graphic as Spritemap).add("fire", [2]);
+			
 			
 			maxSpeed.x = 3;
 			maxSpeed.y = 6;
@@ -28,11 +35,18 @@ package com.cambrianman.monsters.monsters
 			acceleration.y = 0.2;
 			
 			state = NORMAL;
-			collidables = ["ground", "monster"];
+			collidables = ["ground", "monster", "player"];
 		}
 		
 		override public function update():void
 		{
+			if (state == NORMAL)
+				(graphic as Spritemap).play("normal");
+			else if (state == WATER)
+				(graphic as Spritemap).play("water");
+			else if (state == FIRE)
+				(graphic as Spritemap).play("fire");
+			
 			if (facing == Mobile.RIGHT)
 				(graphic as Image).flipped = false;
 			else
@@ -87,6 +101,15 @@ package com.cambrianman.monsters.monsters
 				_x = right + 1;
 			else
 				_x = x - 1;
+				
+			var _fx:Number = (facing == LEFT) ? x - 1 : x + 1;
+			if (!collide("monster", _fx, y))
+			{
+				if (collide("monster", _fx, y + 1))
+				{
+					return true;
+				}
+			}
 				
 			return (level.isSolidTile(_x, bottom + 1));
 		}

@@ -20,7 +20,8 @@ package com.cambrianman.monsters.items
 			(graphic as Spritemap).add("drip", [0, 1, 2, 3], 8);
 			(graphic as Spritemap).play("drip");
 			
-			originX = -2;
+			originX = -4;
+			originY = -2;
 		}
 		
 		override public function update():void
@@ -33,6 +34,7 @@ package com.cambrianman.monsters.items
 		
 		override protected function onCollide(e:Entity):void
 		{
+			level.particles.burstAt(x, y, Item.WATER);
 			level.recycle(this);
 			level.spawnSeed(spawner, Item.WATER);
 			
@@ -45,7 +47,7 @@ package com.cambrianman.monsters.items
 		{
 			super.spawn(spawner, level);
 			x += 16;
-			y += 9;
+			y += 12;
 		}
 	}
 

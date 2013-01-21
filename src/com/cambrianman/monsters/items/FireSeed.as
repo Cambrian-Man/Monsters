@@ -25,12 +25,13 @@ package com.cambrianman.monsters.items
 			(graphic as Spritemap).add("burn", [0, 1, 2, 3], 8, true);
 			(graphic as Spritemap).play("burn");
 			
-			originX = -2;
-			originY = -4;
+			originX = -4;
+			originY = -6;
 		}
 		
 		override protected function onCollide(e:Entity):void
 		{
+			level.particles.burstAt(x, y, FIRE);
 			level.recycle(this);
 			level.spawnSeed(spawner, Item.FIRE);
 			
@@ -43,7 +44,7 @@ package com.cambrianman.monsters.items
 		{
 			super.spawn(spawner, level);
 			x += 16;
-			y += 9;
+			y += 12;
 		}
 	}
 
