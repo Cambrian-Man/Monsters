@@ -13,6 +13,8 @@ package com.cambrianman.monsters
 	import net.flashpunk.masks.Hitbox;
 	import net.flashpunk.World;
 	import net.flashpunk.FP;
+	import net.flashpunk.utils.Input;
+	import net.flashpunk.utils.Key;
 	
 	/**
 	 * Level class, the base world class.
@@ -70,8 +72,8 @@ package com.cambrianman.monsters
 			
 			damagers = new Vector.<int>;
 			
-			player.checkpoint.level = Levels.test
-			player.checkpoint.entrance = "gameStart";
+			player.checkpoint.level = Levels.looper;
+			player.checkpoint.entrance = "topRight";
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 			
@@ -82,6 +84,9 @@ package com.cambrianman.monsters
 		override public function update():void
 		{
 			super.update();
+			
+			if (Input.pressed(Key.R))
+				loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 			
 			var _e:Exit = player.collide("exit", player.x, player.y) as Exit;
 			if (_e)
@@ -171,13 +176,17 @@ package com.cambrianman.monsters
 		 * @param	entrance	Which entrance to set the player to.
 		 */
 		public function loadLevel(data:Class, entrance:String):void
-		{	
+		{
 			// Clear the old stuff.
 			if (exits)
 				removeList(exits);
 				
 			if (tileLayers)
 				removeList(tileLayers);
+				
+			player.pushing = null;
+			player.clinging = null;
+			player.held = null;
 			
 			levelData = new XML(new data);
 			var _tileset:XML = new XML(new XMLTILESET);

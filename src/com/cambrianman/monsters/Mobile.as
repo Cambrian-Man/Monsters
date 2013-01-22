@@ -117,6 +117,18 @@ package com.cambrianman.monsters
 			return true;
 		}
 		
+		public function canPush(direction:int):Boolean
+		{
+			if (!pushable)
+				return false;
+				
+			var _x:Number = (direction == Mobile.RIGHT) ? x + 1 : x - 1;
+			if (collideTypes(collidables, _x, y))
+				return false;
+			else
+				return true;
+		}
+		
 		public function push(direction:int, amount:Number):void
 		{
 			switch (direction) 

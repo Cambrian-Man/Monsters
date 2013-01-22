@@ -79,9 +79,9 @@ package com.cambrianman.monsters.monsters
 		{
 			if (checkPush(e))
 			{
-				(e as Mobile).push(facing, 1);
+				(e as Mobile).push(facing, 2);
 			}
-			else if (e == level.ground && state == NORMAL)
+			else if (state == NORMAL)
 				turn();
 			
 			super.moveCollideX(e);
@@ -120,7 +120,7 @@ package com.cambrianman.monsters.monsters
 		 */
 		private function checkPush(e:Entity):Boolean
 		{			
-			if (!(e is Mobile) || !(e as Mobile).pushable)
+			if (!(e is Mobile) || !(e as Mobile).canPush(facing))
 				return false;
 				
 			if (facing == RIGHT && x < e.x)

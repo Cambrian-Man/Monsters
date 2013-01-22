@@ -7,9 +7,7 @@ package com.cambrianman.monsters
 	 * @author Evan Furchtgott
 	 */
 	public class Levels 
-	{
-		public static const list:Object = new Object();
-		
+	{	
 		// Testbed levels
 		[Embed(source = "levels/test.tmx", mimeType = "application/octet-stream")] public static const test:Class;
 		[Embed(source = "levels/test2.tmx", mimeType = "application/octet-stream")] public static const test2:Class;
@@ -20,6 +18,7 @@ package com.cambrianman.monsters
 		[Embed(source = "levels/descent.tmx", mimeType = "application/octet-stream")] public static const descent:Class;
 		[Embed(source = "levels/blockCorridor.tmx", mimeType = "application/octet-stream")] public static const blockCorridor:Class;
 		[Embed(source = "levels/looper.tmx", mimeType = "application/octet-stream")] public static const looper:Class;
+		[Embed(source = "levels/portcullis.tmx", mimeType = "application/octet-stream")] public static const portcullis:Class;
 		
 		public function Levels() 
 		{

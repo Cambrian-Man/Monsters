@@ -46,7 +46,7 @@ package com.cambrianman.monsters.monsters
 		
 		override public function update():void
 		{
-			 if (speed.y > 0 && collide("player", x, y + 1))
+			 if (speed.y > 0.5 && collide("player", x, y + 1))
 			{
 				level.player.y = top - level.player.height;
 			}
