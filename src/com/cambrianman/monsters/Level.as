@@ -30,8 +30,8 @@ package com.cambrianman.monsters
 		public var player:Player;
 		
 		private var levelData:XML;
-		private var levelWidth:int;
-		private var levelHeight:int;
+		public var width:int;
+		public var height:int;
 		
 		private var cameraPoint:Point;
 		
@@ -72,8 +72,8 @@ package com.cambrianman.monsters
 			
 			damagers = new Vector.<int>;
 			
-			player.checkpoint.level = Levels.looper;
-			player.checkpoint.entrance = "topRight";
+			player.checkpoint.level = Levels.start;
+			player.checkpoint.entrance = "gameStart";
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 			
@@ -108,7 +108,7 @@ package com.cambrianman.monsters
 		{
 			cameraPoint.x = player.centerX - FP.halfWidth;
 			cameraPoint.y = player.centerY - FP.halfHeight + player.cameraOffset;
-			FP.clampInRect(cameraPoint, 0, 0, levelWidth - FP.width, levelHeight - FP.height);
+			FP.clampInRect(cameraPoint, 0, 0, width - FP.width, height - FP.height);
 			
 			FP.setCamera(cameraPoint.x, cameraPoint.y);
 		}
@@ -184,6 +184,9 @@ package com.cambrianman.monsters
 			if (tileLayers)
 				removeList(tileLayers);
 				
+			if (items)
+				removeList(items);
+				
 			player.pushing = null;
 			player.clinging = null;
 			player.held = null;
@@ -191,8 +194,8 @@ package com.cambrianman.monsters
 			levelData = new XML(new data);
 			var _tileset:XML = new XML(new XMLTILESET);
 			
-			levelWidth = levelData.@width * _tileset.@tilewidth;
-			levelHeight = levelData.@height * _tileset.@tileheight;
+			width = levelData.@width * _tileset.@tilewidth;
+			height = levelData.@height * _tileset.@tileheight;
 
 			// Load in our special tiles, the ones that are solid or that damage.
 			solids = new Array();
@@ -212,7 +215,7 @@ package com.cambrianman.monsters
 			var _layer:int = 9;
 			for each (var _l:XML in levelData.layer)
 			{
-				var _tilemap:Tilemap = new Tilemap(IMGTILES, levelWidth, levelHeight, _tileset.@tilewidth, _tileset.@tileheight);
+				var _tilemap:Tilemap = new Tilemap(IMGTILES, width, height, _tileset.@tilewidth, _tileset.@tileheight);
 
 				setTilesByArray(_tilemap, _l.data.split(","));
 				
@@ -339,6 +342,7 @@ package com.cambrianman.monsters
 			
 			addList(monsters);
 			addList(environment);
+			addList(items);
 		}
 		
 		/**
@@ -387,26 +391,13 @@ package com.cambrianman.monsters
 		{
 			var seed:Item;
 			
-			switch (type) 
-			{
-				case Item.FIRE:
-					seed = create(FireSeed) as Item;
-				break;
-				case Item.WATER:
-					seed = create(WaterSeed) as Item;
-				break;
-				case Item.FIREDROP:
-					seed = create(FireDrop) as Item;
-				break;
-				case Item.WATERDROP:
-					seed = create(WaterDrop) as Item;
-				break;
-			}
-			
-			seed.spawn(spawner, this);
+			seed = create(Item) as Item;
+			seed.spawn(spawner, this, type);
 			add(seed);
+			
 			if (items.indexOf(seed) == -1)
 				items.push(seed);
+			
 		}
 	}
 

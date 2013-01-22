@@ -12,7 +12,7 @@ package com.cambrianman.monsters.monsters
 	import net.flashpunk.tweens.misc.MultiVarTween;
 	import net.flashpunk.tweens.misc.NumTween;
 	/**
-	 * ...
+	 * Block monster class.
 	 * @author Evan Furchtgott
 	 */
 	public class Block extends Monster 
@@ -31,6 +31,9 @@ package com.cambrianman.monsters.monsters
 			(graphic as Spritemap).add("large", [2]);
 			pushable = true;
 			
+			// Set up tweens for expanding size and graphics.
+			// These operate on two different objects, so need to be diffrent
+			// tweens.
 			sizeTween = new MultiVarTween(sizeComplete);
 			addTween(sizeTween);
 			
@@ -39,7 +42,7 @@ package com.cambrianman.monsters.monsters
 			
 			acceleration.y = 0.2;
 			maxSpeed.y = 10;
-			beNormal();
+			setOrigin(0, 0);
 			
 			collidables = ["ground", "monster", "player"];
 		}
@@ -62,7 +65,7 @@ package com.cambrianman.monsters.monsters
 			else if (state == WATER)
 			{
 				level.particles.smokeAt(centerX, centerY, Item.FIRE);
-				beNormal();
+				setOrigin(0, 0);
 				shrink();
 				return;
 			}
@@ -71,6 +74,12 @@ package com.cambrianman.monsters.monsters
 			shrink();
 		}
 		
+		/**
+		 * Sets the size of the block without a tween.
+		 * Used during loading.
+		 * @param	size	A string. "small", "medium", "large". Just
+		 * so we can pass in the level's value directly.
+		 */
 		public function setSize(size:String):void
 		{
 			switch (size) 
@@ -103,7 +112,7 @@ package com.cambrianman.monsters.monsters
 			
 			if (state == FIRE)
 			{
-				beNormal();
+				setOrigin(0, 0);
 			}
 				
 			var growDir:int = canGrow();
@@ -114,11 +123,11 @@ package com.cambrianman.monsters.monsters
 			grow(growDir);
 		}
 		
-		private function beNormal():void
-		{
-			setOrigin(0, 0);
-		}
-		
+		/**
+		 * Grows the block in a given direction. This starts
+		 * a tween for the animation.
+		 * @param	direction A Mobile constant direction.
+		 */
 		private function grow(direction:int):void
 		{
 			var _x:Number;
@@ -138,6 +147,10 @@ package com.cambrianman.monsters.monsters
 			state += 1;
 		}
 		
+		/**
+		 * Shrinks the block. Much simpler than grow because
+		 * we don't need to check for collision.
+		 */
 		private function shrink():void
 		{
 			sizeTween.tween(this, { x: x + 8, y: y + 16 }, 0.1);
@@ -149,6 +162,9 @@ package com.cambrianman.monsters.monsters
 			state -= 1;
 		}
 		
+		/**
+		 * Called when we've completed tweening.
+		 */
 		private function sizeComplete():void
 		{	
 			if (state == WATER)
@@ -163,14 +179,18 @@ package com.cambrianman.monsters.monsters
 		
 		/**
 		 * Checks to see which way the object can grow.
-		 * @return
+		 * @return	A direction. UP, LEFT, RIGHT, or NONE.
 		 */
 		private function canGrow():int
 		{
 			var direction:int = Mobile.NONE;
+			
+			// Make ourselves bigger, temporarily.
 			width += 16;
 			height += 16;
 			
+			// By default, we should just grow from the middle
+			// but if we can't, let's check either side.
 			if (!collideTypes(collidables, x - 8, y - 16))
 			{
 				direction = Mobile.UP;
@@ -184,6 +204,8 @@ package com.cambrianman.monsters.monsters
 				direction = Mobile.LEFT;
 			}
 			
+			// And shrink back down. We'll grow properly by using
+			// a tween.
 			width -= 16;
 			height -= 16;
 			return direction;

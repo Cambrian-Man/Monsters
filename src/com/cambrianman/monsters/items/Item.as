@@ -2,8 +2,10 @@ package com.cambrianman.monsters.items
 {
 	import com.cambrianman.monsters.Level;
 	import com.cambrianman.monsters.Mobile;
+	import com.cambrianman.monsters.monsters.Monster;
 	import net.flashpunk.Entity;
 	import net.flashpunk.Graphic;
+	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Mask;
 	
 	/**
@@ -21,7 +23,15 @@ package com.cambrianman.monsters.items
 		protected var held:Boolean = false;
 		protected var spawner:Entity;
 		
-		public function Item(level:Level=null, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) 
+		public var itemType:int;
+		
+		private var fireGraphic:Spritemap;
+		private var waterGraphic:Spritemap;
+		
+		[Embed(source = "../gfx/items/fire_seed.png")] private const IMGFIRE:Class;
+		[Embed(source = "../gfx/items/water_seed.png")] private const IMGWATER:Class;
+		
+		public function Item() 
 		{
 			super(level, x, y, graphic, mask);
 			
@@ -29,17 +39,29 @@ package com.cambrianman.monsters.items
 			
 			width = 8;
 			height = 8;
-			setOrigin( -4, -4);
 			
 			type = "item";
 			layer = 2;
 			
 			maxSpeed.x = 6;
 			maxSpeed.y = 2;
+			
+			fireGraphic = new Spritemap(IMGFIRE, 16, 16);
+			fireGraphic.add("anim", [0, 1, 2, 3], 8, true);
+			fireGraphic.play("anim");
+			
+			waterGraphic = new Spritemap(IMGWATER, 16, 16);
+			waterGraphic.add("anim", [0, 1, 2, 3], 8, true);
+			waterGraphic.play("anim");
+			
+			sweep = true;
 		}
 		
 		override public function update():void
 		{
+			if (x < -200 || x > level.width + 200 || y < -200 || y > level.height + 200)
+				die();
+			
 			if (held)
 			{
 				y = level.player.y + 4;
@@ -52,20 +74,59 @@ package com.cambrianman.monsters.items
 			super.update();
 		}
 		
-		public function spawn(spawner:Entity, level:Level):void
+		public function spawn(spawner:Entity, level:Level, type:int):void
 		{
 			this.level = level;
 			this.spawner = spawner;
-			x = spawner.x;
-			y = spawner.y;
+			this.itemType = type;
+
 			speed.x = 0;
 			speed.y = 0;
-			acceleration.y = 0;
 			maxSpeed.y = 10;
+			
+			// Tweak the parameters for each item type.
+			switch (type) 
+			{
+				case FIRE:
+					acceleration.y = 0;
+					x = spawner.x + 16;
+					y = spawner.y + 12;
+					setOrigin( -4, -6);
+					graphic = fireGraphic;
+					fireGraphic.play("anim");
+				break;
+				case WATER:
+					acceleration.y = 0;
+					x = spawner.x + 16;
+					y = spawner.y + 12;
+					setOrigin( -4, -2);
+					graphic = waterGraphic;
+					waterGraphic.play("anim");
+				break;
+				case FIREDROP:
+					acceleration.y = 0.2;
+					x = spawner.x + 8;
+					y = spawner.y + 12;
+					setOrigin( -4, -6);
+					graphic = fireGraphic;
+					fireGraphic.play("anim");
+				break;
+				case WATERDROP:
+					acceleration.y = 0.2;
+					x = spawner.x + 8;
+					y = spawner.y + 12;
+					setOrigin( -4, -6);
+					graphic = waterGraphic;
+					waterGraphic.play("anim");
+				break;
+			}
 		}
 		
 		public function grab():void
 		{
+			if (itemType == WATERDROP || itemType == FIREDROP)
+				return;
+			
 			level.player.held = this;
 			held = true;
 		}
@@ -115,11 +176,31 @@ package com.cambrianman.monsters.items
 		 */
 		protected function onCollide(e:Entity):void
 		{
-			
+			if (itemType == FIRE || itemType == FIREDROP)
+			{
+				level.particles.burstAt(x, y, FIRE);
+				if (e is Monster)
+					(e as Monster).onFire();
+			}
+			else if (itemType == WATER || itemType == WATERDROP)
+			{
+				level.particles.burstAt(x, y, WATER);
+				if (e is Monster)
+					(e as Monster).onWater();
+			}
+
+			die();
 		}
 		
-		override public function removed():void
+		public function die():void
 		{
+			if (itemType == FIRE || itemType == WATER)
+			{
+				level.spawnSeed(spawner, itemType);
+				if (level.player.held == this)
+					level.player.held = null;
+			}
+			
 			level.recycle(this);
 		}
 	}

@@ -9,7 +9,7 @@ package com.cambrianman.monsters.monsters
 	import net.flashpunk.Mask;
 	
 	/**
-	 * ...
+	 * Pushy monster class.
 	 * @author Evan Furchtgott
 	 */
 	public class Pushy extends Monster 
@@ -52,6 +52,9 @@ package com.cambrianman.monsters.monsters
 			else
 				(graphic as Image).flipped = true;
 				
+			// In the normal state, check to see if we can' go
+			// on because of a cliff or blocking monster.
+			// In the fire state, we just push on ahead.
 			if (state == NORMAL)
 			{
 				if (!checkFloorAhead()) 
@@ -77,6 +80,7 @@ package com.cambrianman.monsters.monsters
 		
 		override public function moveCollideX(e:Entity):Boolean
 		{
+			// If we can push something, push it. Otherwise, turn around.
 			if (checkPush(e))
 			{
 				(e as Mobile).push(facing, 2);
@@ -94,14 +98,19 @@ package com.cambrianman.monsters.monsters
 			(facing == Mobile.RIGHT) ? facing = Mobile.LEFT : facing = Mobile.RIGHT;
 		}
 		
+		/**
+		 * Checks to see if the floor one tile ahead and below is
+		 * solid or not.
+		 * @return
+		 */
 		private function checkFloorAhead():Boolean
 		{
-			var _x:int;
-			if (facing == Mobile.RIGHT)
-				_x = right + 1;
-			else
-				_x = x - 1;
-				
+			// The x position of the next tile.
+			// Changing facing doesn't actually switch the origin,
+			// So we look at the right or left side.
+			var _tx:int = (facing == Mobile.RIGHT) ? _tx = right + 1 : _tx = x - 1;
+
+			// The next x in the direction we're facing.
 			var _fx:Number = (facing == LEFT) ? x - 1 : x + 1;
 			if (!collide("monster", _fx, y))
 			{
@@ -111,11 +120,13 @@ package com.cambrianman.monsters.monsters
 				}
 			}
 				
-			return (level.isSolidTile(_x, bottom + 1));
+			return (level.isSolidTile(_tx, bottom + 1));
 		}
 		
 		/**
 		 * Check to see if we should push the entity.
+		 * Different from looking at pushable because
+		 * we're seeing if there's actual room to move.
 		 * @param	e
 		 */
 		private function checkPush(e:Entity):Boolean

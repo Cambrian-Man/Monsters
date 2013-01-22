@@ -28,6 +28,10 @@ package com.cambrianman.monsters
 		// Reference to the current level, for convenience.
 		protected var level:Level;
 		
+		// Should we sweep fast moving objects? More expensive
+		// but more accurate.
+		protected var sweep:Boolean = false;
+		
 		// Constants referring to various facing directions.
 		public static const NONE:int = -1;
 		public static const LEFT:int = 0;
@@ -62,12 +66,16 @@ package com.cambrianman.monsters
 			var absX:Number = Math.abs(speed.x);
 			var absY:Number = Math.abs(speed.y);
 
+			// Clamp our speeds to the max speeds.
 			speed.x = speed.x + acceleration.x;
 			speed.x = FP.clamp(speed.x, (maxSpeed.x * -1), maxSpeed.x);
 			
 			speed.y = speed.y + acceleration.y;
 			speed.y = FP.clamp(speed.y, (maxSpeed.y * -1), maxSpeed.y);
 			
+			// If we are moving, we decrease our speed by the amount of
+			// drag. We round it to 0 if we're moving less than the drag
+			// amount, so we don't rubber back around.
 			if (absX > 0)
 			{
 				if (absX < drag.x)
@@ -84,7 +92,8 @@ package com.cambrianman.monsters
 					speed.y = speed.y + (drag.y * FP.sign(speed.y));
 			}
 			
-			moveBy(speed.x, speed.y, collidables, false);
+			// Finally, move us by speed.
+			moveBy(speed.x, speed.y, collidables, sweep);
 			
 			super.update();
 		}
@@ -117,6 +126,11 @@ package com.cambrianman.monsters
 			return true;
 		}
 		
+		/**
+		 * Checks if this can be pushed in the given direction.
+		 * @param	direction
+		 * @return
+		 */
 		public function canPush(direction:int):Boolean
 		{
 			if (!pushable)
@@ -129,6 +143,11 @@ package com.cambrianman.monsters
 				return true;
 		}
 		
+		/**
+		 * Pushes the object in the direction (left or right) by the amount given.
+		 * @param	direction
+		 * @param	amount
+		 */
 		public function push(direction:int, amount:Number):void
 		{
 			switch (direction) 
