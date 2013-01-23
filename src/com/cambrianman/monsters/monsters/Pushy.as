@@ -83,7 +83,7 @@ package com.cambrianman.monsters.monsters
 			// If we can push something, push it. Otherwise, turn around.
 			if (checkPush(e))
 			{
-				(e as Mobile).push(facing, 2);
+				(e as Mobile).push(facing, 1);
 			}
 			else if (state == NORMAL)
 				turn();
@@ -108,7 +108,7 @@ package com.cambrianman.monsters.monsters
 			// The x position of the next tile.
 			// Changing facing doesn't actually switch the origin,
 			// So we look at the right or left side.
-			var _tx:int = (facing == Mobile.RIGHT) ? _tx = right + 1 : _tx = x - 1;
+			var _tx:int = (facing == Mobile.RIGHT) ? _tx = right : _tx = x;
 
 			// The next x in the direction we're facing.
 			var _fx:Number = (facing == LEFT) ? x - 1 : x + 1;

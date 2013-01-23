@@ -139,6 +139,24 @@
    <property name="solid" value="true"/>
   </properties>
  </tile>
+ <tile id="324">
+  <properties>
+   <property name="damage" value="true"/>
+   <property name="solid" value="true"/>
+  </properties>
+ </tile>
+ <tile id="325">
+  <properties>
+   <property name="damage" value="true"/>
+   <property name="solid" value="true"/>
+  </properties>
+ </tile>
+ <tile id="326">
+  <properties>
+   <property name="damage" value="true"/>
+   <property name="solid" value="true"/>
+  </properties>
+ </tile>
  <tile id="361">
   <properties>
    <property name="damage" value="true"/>
@@ -152,6 +170,24 @@
   </properties>
  </tile>
  <tile id="363">
+  <properties>
+   <property name="damage" value="true"/>
+   <property name="solid" value="true"/>
+  </properties>
+ </tile>
+ <tile id="364">
+  <properties>
+   <property name="damage" value="true"/>
+   <property name="solid" value="true"/>
+  </properties>
+ </tile>
+ <tile id="365">
+  <properties>
+   <property name="damage" value="true"/>
+   <property name="solid" value="true"/>
+  </properties>
+ </tile>
+ <tile id="366">
   <properties>
    <property name="damage" value="true"/>
    <property name="solid" value="true"/>

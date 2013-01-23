@@ -150,13 +150,18 @@ package com.cambrianman.monsters
 		 */
 		public function push(direction:int, amount:Number):void
 		{
+			var playerOn:Boolean = (collideWith(level.player, x, y - 1) && level.player.bottom <= top);
 			switch (direction) 
 			{
 				case RIGHT:
 					moveBy(amount, 0, collidables);
+					if (playerOn)
+						level.player.moveBy(amount, 0, level.player.collidables);
 				break;
 				case LEFT:
 					moveBy((amount * -1), 0, collidables);
+					if (playerOn)
+						level.player.moveBy(amount * -1, 0, level.player.collidables);
 				break;
 				default:
 			}
