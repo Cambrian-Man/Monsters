@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="16" tileheight="16">
- <tileset firstgid="1" source="C:/Users/Evan2/Documents/My Box Files/Monsters/src/com/cambrianman/monsters/levels/tiles.tsx"/>
+ <tileset firstgid="1" source="tiles.tsx"/>
  <layer name="FarBack" width="40" height="30">
   <data encoding="csv">
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
@@ -128,6 +128,12 @@
    <properties>
     <property name="facing" value="left"/>
     <property name="state" value="normal"/>
+   </properties>
+  </object>
+  <object type="spittingMonster" x="256" y="16" width="32" height="32">
+   <properties>
+    <property name="facing" value="right"/>
+    <property name="state" value="fire"/>
    </properties>
   </object>
  </objectgroup>

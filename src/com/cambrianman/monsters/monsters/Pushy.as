@@ -15,7 +15,6 @@ package com.cambrianman.monsters.monsters
 	public class Pushy extends Monster 
 	{
 		[Embed(source = "../gfx/enemies/pushy_monster.png")] private const IMGPUSHY:Class;
-		public var facing:int;
 		
 		public function Pushy(level:Level, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) 
 		{

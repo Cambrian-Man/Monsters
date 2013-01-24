@@ -18,6 +18,8 @@ package com.cambrianman.monsters.monsters
 		public static const NORMAL:int = 1;
 		public static const WATER:int = 2;
 		
+		public var facing:int;
+		
 		public var state:int;
 		
 		public function Monster(level:Level, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) 

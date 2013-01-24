@@ -78,11 +78,11 @@ package com.cambrianman.monsters
 			player.checkpoint.level = Levels.start;
 			player.checkpoint.entrance = "gameStart";
 			
-			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
-			
 			particles = new ParticleSystem();
 			add(particles);
 			
+			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
+
 			//music = new Sfx(SNDMUSIC);
 			//music.loop();
 		}
@@ -192,6 +192,8 @@ package com.cambrianman.monsters
 				
 			if (items)
 				removeList(items);
+				
+			particles.clearSprays();
 				
 			player.pushing = null;
 			player.clinging = null;
@@ -338,8 +340,24 @@ package com.cambrianman.monsters
 							(_m as Pushy).facing = Mobile.LEFT;
 						else
 							(_m as Pushy).facing = Mobile.RIGHT;
-						
+							
 						_m.setState(_i..property.(@name == "state").@value);
+						
+						monsters.push(_m);
+					break;
+					case "spittingMonster":
+						_m = new Spitting(this, _i.@x, _i.@y);
+						if (_i..property.(@name == "facing").@value == "left")
+							(_m as Spitting).facing = Mobile.LEFT;
+						else
+							(_m as Spitting).facing = Mobile.RIGHT;
+							
+						_m.setState(_i..property.(@name == "state").@value);
+						
+						if (_i..property.(@name == "state").@value == "water")
+							particles.startSpray(_m, Item.WATER);
+						else if (_i..property.(@name == "state").@value == "fire")
+							particles.startSpray(_m, Item.FIRE);
 						
 						monsters.push(_m);
 					break;
