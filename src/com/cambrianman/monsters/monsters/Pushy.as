@@ -35,7 +35,8 @@ package com.cambrianman.monsters.monsters
 			acceleration.y = 0.2;
 			
 			state = NORMAL;
-			collidables = ["ground", "monster", "player"];
+			collidables = ["ground", "monster"];
+			type = "backgroundMonster";
 		}
 		
 		override public function update():void

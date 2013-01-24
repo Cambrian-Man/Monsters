@@ -11,6 +11,7 @@ package com.cambrianman.monsters
 	import net.flashpunk.graphics.TiledImage;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.masks.Hitbox;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.World;
 	import net.flashpunk.FP;
 	import net.flashpunk.utils.Input;
@@ -55,6 +56,8 @@ package com.cambrianman.monsters
 		
 		public var particles:ParticleSystem;
 		
+		private var music:Sfx;
+		
 		public function Level() 
 		{
 			player = new Player(this);
@@ -79,6 +82,9 @@ package com.cambrianman.monsters
 			
 			particles = new ParticleSystem();
 			add(particles);
+			
+			//music = new Sfx(SNDMUSIC);
+			//music.loop();
 		}
 		
 		override public function update():void

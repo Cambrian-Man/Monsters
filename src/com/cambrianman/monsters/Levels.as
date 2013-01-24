@@ -17,8 +17,10 @@ package com.cambrianman.monsters
 		[Embed(source = "levels/balloonIntro.tmx", mimeType = "application/octet-stream")] public static const balloonIntro:Class;
 		[Embed(source = "levels/descent.tmx", mimeType = "application/octet-stream")] public static const descent:Class;
 		[Embed(source = "levels/blockCorridor.tmx", mimeType = "application/octet-stream")] public static const blockCorridor:Class;
+		[Embed(source = "levels/gatekeeper.tmx", mimeType = "application/octet-stream")] public static const gatekeeper:Class;
 		[Embed(source = "levels/looper.tmx", mimeType = "application/octet-stream")] public static const looper:Class;
 		[Embed(source = "levels/portcullis.tmx", mimeType = "application/octet-stream")] public static const portcullis:Class;
+		[Embed(source = "levels/pushPop.tmx", mimeType = "application/octet-stream")] public static const pushPop:Class;
 		
 		public function Levels() 
 		{
