@@ -1,6 +1,7 @@
 package com.cambrianman.monsters 
 {
 	import com.cambrianman.monsters.monsters.Monster;
+	import com.cambrianman.monsters.monsters.Spray;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Emitter;
 	import net.flashpunk.FP;
@@ -22,6 +23,8 @@ package com.cambrianman.monsters
 		private var sprays:Vector.<Spray>;
 		private var sprayDelay:Number = 0.1;
 		private var sprayTimer:Number = 0;
+		
+		public var level:Level;
 		
 		public function ParticleSystem() 
 		{
@@ -65,12 +68,17 @@ package com.cambrianman.monsters
 		
 		public function clearSprays():void
 		{
-			sprays = new Vector.<Spray>();	
+			if (sprays)
+				level.removeList(sprays);
+				
+			sprays = new Vector.<Spray>();
 		}
 		
 		public function startSpray(m:Monster, type:int):void
 		{
-			sprays.push(new Spray(m, type));
+			var _s:Spray = new Spray(m, type)
+			sprays.push(_s);
+			level.add(_s);
 		}
 		
 		public function stopSpray(m:Monster):void
@@ -78,7 +86,10 @@ package com.cambrianman.monsters
 			for (var i:int = 0; i < sprays.length; i++) 
 			{
 				if (sprays[i].monster == m)
+				{
+					level.remove(sprays[i]);
 					sprays.splice(i, 1);
+				}
 			}
 		}
 		

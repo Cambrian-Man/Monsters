@@ -97,6 +97,9 @@ package com.cambrianman.monsters
 		override public function update():void {
 			super.update();
 			
+			if (y > level.height + 200)
+				damage(null);
+			
 			// Check if we're on the ground, or at least on a collidable object.
 			if (collideTypes(collidables, x, y + 1))
 				onGround = true;

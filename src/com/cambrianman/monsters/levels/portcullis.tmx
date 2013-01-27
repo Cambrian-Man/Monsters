@@ -202,6 +202,14 @@
    </properties>
   </object>
   <object name="left" type="entrance" x="16" y="64" width="32" height="32"/>
+  <object type="exit" x="624" y="800" width="16" height="96">
+   <properties>
+    <property name="entrance" value="left"/>
+    <property name="from" value="left"/>
+    <property name="to" value="rider"/>
+   </properties>
+  </object>
+  <object name="right" type="entrance" x="592" y="864" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="Spawns" width="40" height="60" visible="0">
   <object type="blockMonster" x="464" y="48" width="48" height="48">

@@ -44,12 +44,19 @@ package com.cambrianman.monsters.monsters
 			{
 				if (collide("player", x, y - 1))
 					(graphic as Spritemap).play("squish");
-				else if (speed.y > 0 && collide("player", x, y + 1))
+				else if (speed.y > 0 && collide("player", x, y + 1) != null)
 				{
 					level.player.y = top - level.player.height;
 				}
 				else
 					(graphic as Spritemap).play("idle");
+			}
+			else if (state == WATER)
+			{
+				if (collideWith(level.player, x, y - 1) && level.player.bottom <= top)
+				{
+					level.player.x += speed.x;
+				}
 			}
 		}
 		
@@ -67,13 +74,27 @@ package com.cambrianman.monsters.monsters
 			y -= 16;
 			height = 32;
 			acceleration.y = 0;
+			drag.x = 0.001;
+			
 			setOrigin();
 			state = FIRE;
 			type = "backgroundMonster";
+			collidables = ["ground", "monster"];
 			(graphic as Spritemap).play("inflated");
 			level.particles.smokeAt(centerX, centerY, Item.FIRE);
 			speed.y = -0.6;
 			pushable = false;
+		}
+		
+		override public function moveCollideX(e:Entity):Boolean 
+		{
+			super.moveCollideX(e);
+			
+			if (state == FIRE)
+				speed.y = -0.6;
+				
+			
+			return true;
 		}
 		
 		private function beNormal():void
@@ -83,10 +104,12 @@ package com.cambrianman.monsters.monsters
 			originY = -16;
 			
 			acceleration.y = 0.2;
+			speed.x = 0;
 			pushable = false;
 			if (level.player.clinging == this)
 				level.player.clinging = null;
 			type = "monster";
+			collidables = ["ground", "monster"];
 		}
 		
 		override public function onWater():void
@@ -105,6 +128,8 @@ package com.cambrianman.monsters.monsters
 			level.particles.smokeAt(centerX, centerY, Item.WATER);
 			state = WATER;
 			pushable = true;
+			drag.x = 0.002;
+			collidables = ["ground", "monster", "player"];
 		}
 		
 		override public function damage(e:Entity, direction:int = 0):void

@@ -4,6 +4,7 @@ package com.cambrianman.monsters.monsters
 	import net.flashpunk.Graphic;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.Mask;
+	import com.cambrianman.monsters.items.Item;
 	
 	/**
 	 * ...
@@ -17,25 +18,43 @@ package com.cambrianman.monsters.monsters
 		{
 			super(level, x, y, new Image(IMGSPITTING), mask);
 			type = "monster";
-			width = 128;
-			
+			width = 32;
 			height = 32;
+			acceleration.y = 0.2;
 		}
 		
 		override public function update():void
 		{
 			if (facing == LEFT)
 			{
-				originX = 96;
 				(graphic as Image).flipped = true;
 			}
 			else
 			{
-				originX = 0;
 				(graphic as Image).flipped = false;
 			}
 			
 			super.update();
+		}
+		
+		override public function onWater():void
+		{
+			super.onWater();
+			
+			if (state == NORMAL)
+				level.particles.stopSpray(this);
+			else if (state == WATER)
+				level.particles.startSpray(this, Item.WATER);
+		}
+		
+		override public function onFire():void
+		{
+			super.onFire();
+			
+			if (state == NORMAL)
+				level.particles.stopSpray(this);
+			else if (state == FIRE)
+				level.particles.startSpray(this, Item.FIRE);
 		}
 	}
 

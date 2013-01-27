@@ -75,11 +75,12 @@ package com.cambrianman.monsters
 			
 			damagers = new Vector.<int>;
 			
-			player.checkpoint.level = Levels.start;
-			player.checkpoint.entrance = "gameStart";
+			player.checkpoint.level = Levels.lostWoods;
+			player.checkpoint.entrance = "bottomLeft";
 			
 			particles = new ParticleSystem();
 			add(particles);
+			particles.level = this;
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 
@@ -134,12 +135,16 @@ package com.cambrianman.monsters
 					return true;
 				else if (damagers.indexOf(getTileByLoc(entity.right, entity.bottom + 1)) > -1)
 					return true;
+				else if (damagers.indexOf(getTileByLoc(entity.x + 17, entity.bottom + 1)) > -1)
+					return true;
 			}
 			else if (direction == Mobile.UP)
 			{
 				if (damagers.indexOf(getTileByLoc(entity.left, entity.top - 1)) > -1)
 					return true;
 				else if (damagers.indexOf(getTileByLoc(entity.right, entity.top - 1)) > -1)
+					return true;
+				else if(damagers.indexOf(getTileByLoc(entity.x + 17, entity.top - 1)) > -1)
 					return true;
 			}
 			else if (direction == Mobile.LEFT)
@@ -148,12 +153,16 @@ package com.cambrianman.monsters
 					return true;
 				else if (damagers.indexOf(getTileByLoc(entity.left - 1, entity.bottom)) > -1)
 					return true;
+				else if (damagers.indexOf(getTileByLoc(entity.left - 1, entity.top + 17)) > -1)
+					return true;
 			}
 			else if (direction == Mobile.RIGHT)
 			{
 				if (damagers.indexOf(getTileByLoc(entity.right + 1, entity.top)) > -1)
 					return true;
 				else if (damagers.indexOf(getTileByLoc(entity.right + 1, entity.bottom)) > -1)
+					return true;
+				else if (damagers.indexOf(getTileByLoc(entity.right + 1, entity.top + 17)) > -1)
 					return true;
 			}
 			
@@ -192,7 +201,7 @@ package com.cambrianman.monsters
 				
 			if (items)
 				removeList(items);
-				
+			
 			particles.clearSprays();
 				
 			player.pushing = null;

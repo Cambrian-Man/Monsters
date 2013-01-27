@@ -21,6 +21,12 @@ package com.cambrianman.monsters
 		[Embed(source = "levels/looper.tmx", mimeType = "application/octet-stream")] public static const looper:Class;
 		[Embed(source = "levels/portcullis.tmx", mimeType = "application/octet-stream")] public static const portcullis:Class;
 		[Embed(source = "levels/pushPop.tmx", mimeType = "application/octet-stream")] public static const pushPop:Class;
+		[Embed(source = "levels/rider.tmx", mimeType = "application/octet-stream")] public static const rider:Class;
+		[Embed(source = "levels/chasm.tmx", mimeType = "application/octet-stream")] public static const chasm:Class;
+		[Embed(source = "levels/cascade.tmx", mimeType = "application/octet-stream")] public static const cascade:Class;
+		[Embed(source = "levels/rise.tmx", mimeType = "application/octet-stream")] public static const rise:Class;
+		[Embed(source = "levels/tripleBack.tmx", mimeType = "application/octet-stream")] public static const tripleBack:Class;
+		[Embed(source = "levels/lostWoods.tmx", mimeType = "application/octet-stream")] public static const lostWoods:Class;
 		
 		public function Levels() 
 		{
