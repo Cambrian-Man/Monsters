@@ -28,6 +28,8 @@ package com.cambrianman.monsters
 		public function Menu() 
 		{
 			Data.load("monstersSaveData");
+			
+			Text.font = "Mini-Serif";
 
 			newGameItem = new Entity(80, 100, new Text("New Game"));
 			add(newGameItem);

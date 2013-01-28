@@ -91,11 +91,11 @@ package com.cambrianman.monsters
 			
 			text = new Entity(0, 200, new Text(""));
 			add(text);
-			(text.graphic as Text).width = FP.screen.width;
 			text.visible = false;
-			(text.graphic as Text).align = "center";
+			(text.graphic as Text).align = "left";
 			(text.graphic as Text).scrollX = 0;
 			(text.graphic as Text).scrollY = 0;
+			
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 
@@ -465,6 +465,9 @@ package com.cambrianman.monsters
 			(text.graphic as Text).text = toShow;
 			text.addTween(_a, true);
 			text.visible = true;
+			
+			text.x = (FP.screen.width / 2) - ((text.graphic as Text).textWidth / 2);
+			
 		}
 	}
 

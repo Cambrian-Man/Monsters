@@ -3,6 +3,7 @@ package com.cambrianman.monsters.monsters
 	import com.cambrianman.monsters.Level;
 	import net.flashpunk.Graphic;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Mask;
 	import com.cambrianman.monsters.items.Item;
 	
@@ -16,10 +17,18 @@ package com.cambrianman.monsters.monsters
 		
 		public function Spitting(level:Level, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) 
 		{
-			super(level, x, y, new Image(IMGSPITTING), mask);
+			
+			graphic = new Spritemap(IMGSPITTING, 32, 32);
+			super(level, x, y, graphic);
 			type = "monster";
 			width = 32;
-			height = 32;
+			height = 32;			
+
+			(graphic as Spritemap).add("normal", [0]);
+			(graphic as Spritemap).add("water", [1]);
+			(graphic as Spritemap).add("fire", [2]);
+			
+			
 			acceleration.y = 0.2;
 		}
 		
@@ -27,11 +36,11 @@ package com.cambrianman.monsters.monsters
 		{
 			if (facing == LEFT)
 			{
-				(graphic as Image).flipped = true;
+				(graphic as Spritemap).flipped = true;
 			}
 			else
 			{
-				(graphic as Image).flipped = false;
+				(graphic as Spritemap).flipped = false;
 			}
 			
 			super.update();
@@ -42,9 +51,15 @@ package com.cambrianman.monsters.monsters
 			super.onWater();
 			
 			if (state == NORMAL)
+			{
 				level.particles.stopSpray(this);
+				(graphic as Spritemap).play("normal");
+			}
 			else if (state == WATER)
+			{
 				level.particles.startSpray(this, Item.WATER);
+				(graphic as Spritemap).play("water");
+			}
 		}
 		
 		override public function onFire():void
@@ -52,9 +67,15 @@ package com.cambrianman.monsters.monsters
 			super.onFire();
 			
 			if (state == NORMAL)
+			{
 				level.particles.stopSpray(this);
+				(graphic as Spritemap).play("normal");
+			}
 			else if (state == FIRE)
+			{
 				level.particles.startSpray(this, Item.FIRE);
+				(graphic as Spritemap).play("fire");
+			}
 		}
 	}
 
