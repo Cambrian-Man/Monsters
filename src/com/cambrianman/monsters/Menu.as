@@ -16,7 +16,6 @@ package com.cambrianman.monsters
 	 */
 	public class Menu extends World
 	{
-		
 		private var newGameItem:Entity;
 		private var continueGameItem:Entity;
 		private var controlsItem:Entity;
