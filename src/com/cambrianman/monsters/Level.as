@@ -5,17 +5,12 @@ package com.cambrianman.monsters
 	import com.cambrianman.monsters.monsters.*;
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
-	import net.flashpunk.Entity;
-	import net.flashpunk.graphics.Backdrop;
-	import net.flashpunk.graphics.Image;
-	import net.flashpunk.graphics.TiledImage;
-	import net.flashpunk.graphics.Tilemap;
-	import net.flashpunk.masks.Hitbox;
-	import net.flashpunk.Sfx;
-	import net.flashpunk.World;
-	import net.flashpunk.FP;
-	import net.flashpunk.utils.Input;
-	import net.flashpunk.utils.Key;
+	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;
+	import net.flashpunk.*;
+	import net.flashpunk.utils.*;
+	import net.flashpunk.graphics.*;
+	import net.flashpunk.tweens.misc.*;
 	
 	/**
 	 * Level class, the base world class.
@@ -58,7 +53,9 @@ package com.cambrianman.monsters
 		
 		private var music:Sfx;
 		
-		public function Level() 
+		private var text:Entity;
+		
+		public function Level(newGame:Boolean) 
 		{
 			player = new Player(this);
 			player.layer = 2;
@@ -75,12 +72,30 @@ package com.cambrianman.monsters
 			
 			damagers = new Vector.<int>;
 			
-			player.checkpoint.level = Levels.lostWoods;
-			player.checkpoint.entrance = "bottomLeft";
+			if (!newGame)
+			{
+				Data.load("monstersSaveData");
+				player.checkpoint.level = Levels[Data.readString("level", "start")];
+				player.checkpoint.entrance = Data.readString("entrance", "gameStart");
+			}
+			else
+			{
+				player.checkpoint.level = Levels.start;
+				player.checkpoint.entrance = "gameStart";
+			}
 			
-			particles = new ParticleSystem();
+			
+			particles = new ParticleSystem();	
 			add(particles);
 			particles.level = this;
+			
+			text = new Entity(0, 200, new Text(""));
+			add(text);
+			(text.graphic as Text).width = FP.screen.width;
+			text.visible = false;
+			(text.graphic as Text).align = "center";
+			(text.graphic as Text).scrollX = 0;
+			(text.graphic as Text).scrollY = 0;
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 
@@ -192,6 +207,9 @@ package com.cambrianman.monsters
 		 */
 		public function loadLevel(data:Class, entrance:String):void
 		{
+			Data.writeString("level", getQualifiedClassName(data).split('_')[1]);
+			Data.writeString("entrance", entrance);
+			Data.save("monstersSaveData");
 			// Clear the old stuff.
 			if (exits)
 				removeList(exits);
@@ -297,6 +315,9 @@ package com.cambrianman.monsters
 			player.y = entrances[entrance].y;
 			
 			loadSpawns();
+			
+			var _name:String = levelData.properties.property.(@name == "name").@value;
+			flashText(_name);
 		}
 		
 		/**
@@ -431,6 +452,19 @@ package com.cambrianman.monsters
 			if (items.indexOf(seed) == -1)
 				items.push(seed);
 			
+		}
+	
+		public function flashText(toShow:String):void
+		{
+			var _r:Function = function ():void 
+			{
+				text.visible = false;
+			}
+			
+			var _a:Alarm = new Alarm(4, _r);
+			(text.graphic as Text).text = toShow;
+			text.addTween(_a, true);
+			text.visible = true;
 		}
 	}
 

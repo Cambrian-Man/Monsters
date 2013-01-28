@@ -46,6 +46,9 @@ package com.cambrianman.monsters
 		// Can we push this object and trigge the pushing state?
 		public var pushable:Boolean = false;
 		
+		// Is the thing alive? Right now only used by the player.
+		public var alive:Boolean = true;
+		
 		/**
 		 * Constructor
 		 * @param	level		A reference to the current level.
@@ -63,6 +66,9 @@ package com.cambrianman.monsters
 		
 		override public function update():void
 		{
+			if (!alive)
+				return;
+			
 			var absX:Number = Math.abs(speed.x);
 			var absY:Number = Math.abs(speed.y);
 

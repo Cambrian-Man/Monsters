@@ -220,16 +220,19 @@
  <tile id="410">
   <properties>
    <property name="solid" value="true"/>
+   <property name="damage" value="true"/>
   </properties>
  </tile>
  <tile id="450">
   <properties>
    <property name="solid" value="true"/>
+   <property name="damage" value="true"/>
   </properties>
  </tile>
  <tile id="490">
   <properties>
    <property name="solid" value="true"/>
+   <property name="damage" value="true"/>
   </properties>
  </tile>
 </tileset>

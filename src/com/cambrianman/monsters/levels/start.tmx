@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="80" height="14" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="name" value="A Warm Welcome"/>
+ </properties>
  <tileset firstgid="1" source="C:/Users/Evan2/Documents/My Box Files/Monsters/src/com/cambrianman/monsters/levels/tiles.tsx"/>
  <tileset firstgid="1201" source="C:/Users/Evan2/Documents/My Box Files/Monsters/src/com/cambrianman/monsters/levels/tiles.tsx"/>
  <tileset firstgid="2401" source="tiles.tsx"/>

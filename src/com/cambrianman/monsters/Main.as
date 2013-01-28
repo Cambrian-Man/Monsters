@@ -17,7 +17,7 @@ package com.cambrianman.monsters
 		{
 			super(256, 224, 60, false);
 			FP.screen.scale = 2;
-			FP.world = new Level();
+			FP.world = new Menu();
 			//FP.console.enable();
 		}
 		

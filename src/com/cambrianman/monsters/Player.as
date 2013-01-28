@@ -12,6 +12,7 @@ package com.cambrianman.monsters
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Mask;
 	import net.flashpunk.masks.Hitbox;
+	import net.flashpunk.tweens.misc.Alarm;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.FP;
@@ -51,11 +52,13 @@ package com.cambrianman.monsters
 		
 		public var cameraOffset:Number = 0;
 		
+		public var respawnTimer:Alarm; 
+		
 		public var checkpoint:Object = {
 			level: null,
 			entrance: null
 		};
-		
+
 		/**
 		 * Constructor
 		 * @param	level	Pass in a level reference, for convenience.
@@ -96,6 +99,9 @@ package com.cambrianman.monsters
 		
 		override public function update():void {
 			super.update();
+			
+			if (!alive)
+				return;
 			
 			if (y > level.height + 200)
 				damage(null);
@@ -176,8 +182,19 @@ package com.cambrianman.monsters
 		
 		override public function damage(e:Entity, direction:int=0):void
 		{
-			level.loadLevel(checkpoint.level, checkpoint.entrance);
+			respawnTimer = new Alarm(2, respawn);
+			addTween(respawnTimer, true);
+			visible = false;
+			alive = false;
+			level.particles.smokeAt(centerX, centerY, Item.FIRE);
 			super.damage(e, direction);
+		}
+		
+		public function respawn():void
+		{
+			level.loadLevel(checkpoint.level, checkpoint.entrance);
+			visible = true;
+			alive = true;
 		}
 	}
 
