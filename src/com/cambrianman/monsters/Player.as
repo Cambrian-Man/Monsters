@@ -36,7 +36,7 @@ package com.cambrianman.monsters
 		// A hash of integers representing the current control keys.
 		// left, right, up, down
 		// jump, interact
-		private var controlKeys:Object = { };
+		private var controlKeys:Object;
 		
 		private var speedX:Number = 0;
 		
@@ -58,6 +58,8 @@ package com.cambrianman.monsters
 			level: null,
 			entrance: null
 		};
+		
+		public var sprite:PlayerGraphic;
 
 		/**
 		 * Constructor
@@ -65,22 +67,12 @@ package com.cambrianman.monsters
 		 */
 		public function Player(level:Level) 
 		{	
-			var spritemap:Spritemap = new Spritemap(PLAYER, 32, 32);
+			sprite = new PlayerGraphic();
+			sprite.holding = false;
 			
-			spritemap.add("idle", [0]);
-			spritemap.add("hop", [1, 2, 3, 4, 5], 12);
-			spritemap.add("rise", [6]);
-			spritemap.add("fall", [7]);
+			controlKeys = Main.controlKeys;
 			
-			super(level, 0, 0, spritemap);
-			
-			// Set up default keys.
-			controlKeys.left = Key.LEFT;
-			controlKeys.right = Key.RIGHT;
-			controlKeys.up = Key.UP;
-			controlKeys.down = Key.DOWN;
-			controlKeys.interact = Key.C;
-			controlKeys.jump = Key.X;
+			super(level, 0, 0, sprite);
 			
 			// Instantiates the movement classes.
 			for each (var s:Class in movementClasses) 

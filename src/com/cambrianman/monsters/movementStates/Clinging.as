@@ -3,6 +3,7 @@ package com.cambrianman.monsters.movementStates
 	import com.cambrianman.monsters.IMovementState;
 	import com.cambrianman.monsters.Player;
 	import com.cambrianman.monsters.Mobile;
+	import com.cambrianman.monsters.PlayerGraphic;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.utils.Input;
 	
@@ -23,7 +24,7 @@ package com.cambrianman.monsters.movementStates
 		
 		public function initialize(props:Object):void 
 		{
-			this.player = props.player;
+			this.player = props.player;			
 		}
 		
 		public function update(keys:Object):Class 
@@ -32,6 +33,8 @@ package com.cambrianman.monsters.movementStates
 			// return to normal.
 			if (!player.clinging)
 				return Normal;
+				
+			(player.graphic as PlayerGraphic).play("cling");
 				
 			// When we're clinging, we ignore our normal movement
 			// and attach to the clung-to monster.
@@ -42,12 +45,12 @@ package com.cambrianman.monsters.movementStates
 			if (Input.check(keys.left))
 			{
 				player.facing = Mobile.LEFT;
-				(player.graphic as Spritemap).flipped = true;
+				(player.graphic as PlayerGraphic).flipped = true;
 			}
 			else if (Input.check(keys.right))
 			{
 				player.facing = Mobile.RIGHT;
-				(player.graphic as Spritemap).flipped = false;
+				(player.graphic as PlayerGraphic).flipped = false;
 			}
 			
 			// Jumping makes us jump off, while interact just lets go.

@@ -22,6 +22,7 @@ package com.cambrianman.monsters.environment
 		{
 			super(x, y, graphic, mask);
 			timer = new RepeatTimer(3, drip);
+			layer = 5;
 		}
 		
 		override public function update():void

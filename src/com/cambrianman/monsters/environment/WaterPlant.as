@@ -17,7 +17,7 @@ package com.cambrianman.monsters.environment
 		
 		public function WaterPlant(x:Number=0, y:Number=0) 
 		{
-			layer = 4;
+			layer = 5;
 			type = "spawner";
 			super(x, y, new Image(IMGPLANT));
 		}

@@ -19,7 +19,7 @@ package com.cambrianman.monsters.movementStates
 	public class Normal implements IMovementState 
 	{
 		protected var player:Player;
-		protected var sprite:Spritemap;
+		protected var sprite:PlayerGraphic;
 		
 		private var lookDownTimer:TriggerTimer;
 		private var lookUpTimer:TriggerTimer;
@@ -42,7 +42,7 @@ package com.cambrianman.monsters.movementStates
 		public function initialize(props:Object):void
 		{
 			this.player = props.player;
-			sprite = player.graphic as Spritemap;
+			sprite = player.graphic as PlayerGraphic;
 		}
 		
 		public function update(keys:Object):Class
@@ -167,7 +167,8 @@ package com.cambrianman.monsters.movementStates
 		{
 			if (player.facing == Mobile.LEFT)
 				sprite.flipped = true;
-			else sprite.flipped = false;
+			else 
+				sprite.flipped = false;
 			
 			if (Math.abs(player.speed.x) > 0.5)
 				sprite.play("hop");
@@ -199,12 +200,17 @@ package com.cambrianman.monsters.movementStates
 						(player.held as Item).toss(Mobile.LEFT);
 					else if (player.facing == Mobile.RIGHT)
 						(player.held as Item).toss(Mobile.RIGHT);
+						
+					sprite.holding = false;
 				}
 				else
 				{
 					var i:Entity = player.collide("item", player.x, player.y);
 					if (i)
+					{
 						(i as Item).grab();
+						sprite.holding = true;
+					}
 						
 					var m:Entity = player.collideTypes(["monster", "backgroundMonster"], player.x, player.y);
 					if (m && !player.held)

@@ -3,6 +3,7 @@ package com.cambrianman.monsters.movementStates
 	import com.cambrianman.monsters.IMovementState;
 	import com.cambrianman.monsters.Player;
 	import com.cambrianman.monsters.Mobile;
+	import com.cambrianman.monsters.PlayerGraphic;
 	import net.flashpunk.utils.Input;
 	
 	/**
@@ -14,6 +15,8 @@ package com.cambrianman.monsters.movementStates
 		private var player:Player;
 		private var pushDir:int;
 		
+		private var sprite:PlayerGraphic;
+		
 		public function Pushing() 
 		{
 			
@@ -24,6 +27,7 @@ package com.cambrianman.monsters.movementStates
 		public function initialize(props:Object):void 
 		{
 			this.player = props.player;
+			sprite = player.graphic as PlayerGraphic;
 		}
 		
 		public function update(keys:Object):Class 
@@ -42,6 +46,9 @@ package com.cambrianman.monsters.movementStates
 				{
 					player.pushing.push(player.facing, 0.6);
 					player.speed.x = 0.6;
+					sprite.play("hop");
+					sprite.flipped = false;
+					
 					return Pushing;
 				}
 			}
@@ -51,6 +58,9 @@ package com.cambrianman.monsters.movementStates
 				{
 					player.pushing.push(player.facing, 1);
 					player.speed.x = -1;
+					sprite.play("hop");
+					sprite.flipped = true;
+					
 					return Pushing;
 				}
 			}
@@ -67,11 +77,19 @@ package com.cambrianman.monsters.movementStates
 		{
 			player.speed.x = 0;
 			pushDir = int(player.facing);
+			
+			if (!sprite.holding)
+				sprite.holding = true;
 		}
 		
 		public function exit():void 
 		{
 			player.pushing = null;
+			sprite.holding = (player.held != null);
+			if (player.facing == Mobile.RIGHT)
+				sprite.flipped = false;
+			else
+				sprite.flipped = true;
 		}
 		
 	}

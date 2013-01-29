@@ -225,6 +225,7 @@ package com.cambrianman.monsters
 			player.pushing = null;
 			player.clinging = null;
 			player.held = null;
+			(player.graphic as PlayerGraphic).holding = false;
 			
 			levelData = new XML(new data);
 			var _tileset:XML = new XML(new XMLTILESET);

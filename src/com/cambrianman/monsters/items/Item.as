@@ -41,7 +41,7 @@ package com.cambrianman.monsters.items
 			height = 8;
 			
 			type = "item";
-			layer = 2;
+			layer = 3;
 			
 			maxSpeed.x = 6;
 			maxSpeed.y = 2;
@@ -64,12 +64,15 @@ package com.cambrianman.monsters.items
 			
 			if (held)
 			{
-				y = level.player.y + 4;
-				
+				if (itemType == FIRE)
+					y = level.player.y + 4;
+				else if (itemType == WATER)
+					y = level.player.y + 8;
+					
 				if (level.player.facing == RIGHT)
 					x = level.player.right - 4;
 				else
-					x = level.player.x - 4;		
+					x = level.player.x - 4;
 			}
 			super.update();
 		}
