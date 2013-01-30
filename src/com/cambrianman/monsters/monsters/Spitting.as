@@ -60,6 +60,9 @@ package com.cambrianman.monsters.monsters
 		
 		override public function onWater():void
 		{
+			if (state == WATER)
+				return;
+			
 			super.onWater();
 			
 			if (state == NORMAL)
@@ -76,6 +79,9 @@ package com.cambrianman.monsters.monsters
 		
 		override public function onFire():void
 		{
+			if (state == FIRE)
+				return;
+			
 			super.onFire();
 			
 			if (state == NORMAL)

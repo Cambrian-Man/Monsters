@@ -13,15 +13,20 @@ package com.cambrianman.monsters
 	
 	/**
 	 * Class for Main Menu
+	 * This class is pretty quick-and-dirty, done for time.
 	 * @author Evan Furchtgott
 	 */
 	public class Menu extends World
 	{
+		// Used for the cursor.
 		[Embed(source = "gfx/items/fire_seed.png")] private const IMGFIRE:Class;
+		[Embed(source = "gfx/title.png")] private const IMGTITLE:Class;
 		
+		// Entities for the main menu
 		private var newGameItem:Entity;
 		private var continueGameItem:Entity;
 		private var controlsItem:Entity;
+		private var soundItem:Entity;
 		private var creditsItem:Entity;
 		
 		private var mainMenuItems:Vector.<Entity>;
@@ -29,9 +34,12 @@ package com.cambrianman.monsters
 		private var keyItems:Vector.<Entity>;
 		
 		private var selectedItem:int = 0;
+		
+		// -1 means 'no key'. 
 		private var keyToSet:int = -1;
 		
 		private var cursor:Entity;
+		private var title:Entity;
 		
 		private var menu:Vector.<Entity>;
 		
@@ -39,13 +47,16 @@ package com.cambrianman.monsters
 		{			
 			Text.font = "Mini-Serif";
 			
+			title = new Entity(0, 0, new Image(IMGTITLE));
+			add(title);
+			
 			cursor = new Entity(64, 0);
 			cursor.graphic = new Spritemap(IMGFIRE, 16, 16);
 			(cursor.graphic as Spritemap).add("anim", [0, 1, 2, 3], 8, true);
 			(cursor.graphic as Spritemap).play("anim");
 			(cursor.graphic as Spritemap).originY = 4;
 			add(cursor);
-
+			
 			createMainMenu();
 			createControls();
 			
@@ -65,7 +76,16 @@ package com.cambrianman.monsters
 			controlsItem = new Entity(80, 140, new Text("Controls"));
 			add(controlsItem);
 			
-			creditsItem = new Entity(80, 160, new Text("Credits"));
+			var soundStatus:String;
+			if (Data.readBool("sound"))
+				soundStatus = "Disable Sound";
+			else
+				soundStatus = "Enable Sound";
+				
+			soundItem = new Entity(80, 160, new Text(soundStatus));
+			add(soundItem);
+			
+			creditsItem = new Entity(80, 180, new Text("Credits"));
 			add(creditsItem);
 			
 			mainMenuItems = new Vector.<Entity>();
@@ -73,9 +93,15 @@ package com.cambrianman.monsters
 			mainMenuItems.push(continueGameItem);
 			mainMenuItems.push(newGameItem);
 			mainMenuItems.push(controlsItem);
+			mainMenuItems.push(soundItem);
 			mainMenuItems.push(creditsItem);
 		}
 		
+		/**
+		 * Builds our control menu
+		 * Actually two lists, the control and the key used
+		 * The font doesn't handle every key, but it does alphanumerics so whatever.
+		 */
 		private function createControls():void
 		{
 			controlsMenuItems = new Vector.<Entity>();
@@ -134,6 +160,7 @@ package com.cambrianman.monsters
 		{
 			super.update();
 			
+			// If we've got a key to set, just wait for a key to be pressed.
 			if (keyToSet >= 0)
 			{
 				if (Input.pressed(Key.ANY))
@@ -142,6 +169,7 @@ package com.cambrianman.monsters
 				return;
 			}
 			
+			// Cycles through menu items
 			if (Input.pressed(Key.DOWN))
 			{
 				selectedItem++;
@@ -162,6 +190,10 @@ package com.cambrianman.monsters
 			}
 		}
 		
+		/**
+		 * Set the cursor's position to a menu item.
+		 * @param	loc
+		 */
 		private function setCursor(loc:int):void
 		{
 			var item:Entity = menu[loc];
@@ -169,6 +201,10 @@ package com.cambrianman.monsters
 			cursor.y = item.y;
 		}
 		
+		/**
+		 * Actually handle menu item selection.
+		 * @param	item
+		 */
 		private function selectItem(item:int):void
 		{
 			if (menu == mainMenuItems) 
@@ -188,7 +224,16 @@ package com.cambrianman.monsters
 				}
 				else if (item == 3)
 				{
-					
+					if (Data.readBool("sound"))
+					{
+						(soundItem.graphic as Text).text = "Enable Sound";
+						Data.writeBool("sound", false);
+					}
+					else
+					{
+						(soundItem.graphic as Text).text = "Disable Sound";
+						Data.writeBool("sound", true);
+					}
 				}
 			}
 			else if (menu == controlsMenuItems)
@@ -217,6 +262,11 @@ package com.cambrianman.monsters
 			}
 		}
 		
+		/**
+		 * Actually sets the key in our state variables.
+		 * @param	key
+		 * @param	code
+		 */
 		private function setKey(key:int, code:int):void
 		{
 			switch (key) 
@@ -259,6 +309,7 @@ package com.cambrianman.monsters
 			selectedItem = 0;
 			setCursor(selectedItem);
 			addList(mainMenuItems);
+			title.visible = true;
 		}
 		
 		private function showControlsMenu():void
@@ -269,6 +320,7 @@ package com.cambrianman.monsters
 			setCursor(selectedItem);
 			addList(controlsMenuItems);
 			addList(keyItems);
+			title.visible = false;
 		}
 	}
 

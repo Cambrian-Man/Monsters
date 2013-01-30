@@ -18,7 +18,8 @@ package com.cambrianman.monsters
 	 */
 	public class Level extends World 
 	{
-		[Embed(source = "audio/Winter Snow.mp3")] private const SNDMUSIC:Class;
+		// Make these static so we can load them from the menu screen.
+		[Embed(source = "audio/Winter Snow.mp3")] public static const SNDMUSIC:Class;
 		
 		[Embed(source = "levels/tiles.tsx", mimeType = "application/octet-stream")] private const XMLTILESET:Class;
 		[Embed(source = "gfx/environment/tiles.png")] private const IMGTILES:Class;
@@ -52,7 +53,8 @@ package com.cambrianman.monsters
 		
 		public var particles:ParticleSystem;
 		
-		private var music:Sfx;
+		// Static so we can do menu loading.
+		public static var music:Sfx;
 		
 		private var text:Entity;
 		
@@ -99,7 +101,13 @@ package com.cambrianman.monsters
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 
-			music = new Sfx(SNDMUSIC);
+			if (!Data.readBool("sound"))
+			{
+				Sfx.setVolume("music", 0);
+				Sfx.setVolume("effects", 0);
+			}
+			
+			music.type = "music";
 			music.loop();
 		}
 		
@@ -292,7 +300,6 @@ package com.cambrianman.monsters
 					
 					// We need to set which directions the player is allowed to enter from.
 					// Actually, this allows all BUT the side listed.
-					// TODO: Change that, if necessary.
 					if (_e..property.(@name == "from").@value == "left")
 						exit.from = Mobile.LEFT;
 					else if (_e..property.(@name == "from").@value == "right")

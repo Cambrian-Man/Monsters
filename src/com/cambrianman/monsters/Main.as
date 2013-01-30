@@ -5,6 +5,7 @@ package com.cambrianman.monsters
 	import flash.events.Event;
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.utils.Data;
 	
@@ -22,6 +23,8 @@ package com.cambrianman.monsters
 		{
 			Data.load("monstersSaveData");
 			loadKeys();
+			
+			Level.music = new Sfx(Level.SNDMUSIC);
 			
 			super(256, 224, 60, false);
 			FP.screen.scale = 2;

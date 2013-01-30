@@ -4,7 +4,7 @@ package com.cambrianman.monsters
 	import net.flashpunk.graphics.Spritemap;
 	
 	/**
-	 * ...
+	 * The player graphic, a multisprite object
 	 * @author Evan Furchtgott
 	 */
 	public class PlayerGraphic extends Graphiclist 
@@ -33,12 +33,17 @@ package com.cambrianman.monsters
 			
 			holdArms = new Spritemap(IMGHOLDARMS, 32, 32);
 			holdArms.visible = false;
-			add(normalArms);
+			add(holdArms);
 			
 			
 			setupAnims();
 		}
 		
+		/**
+		 * Add the same animations to each body part.
+		 * If we don't need an animation, leave the frame
+		 * blank.
+		 */
 		private function setupAnims():void
 		{
 			for each (var _g:Spritemap in [base, holdArms, normalArms])
@@ -52,6 +57,12 @@ package com.cambrianman.monsters
 			
 		}
 		
+		/**
+		 * Hide or show the different arms based on if we're
+		 * holding an item or not.
+		 * As quick and dirty, we use the same animation
+		 * for pushing.
+		 */
 		public function set holding(value:Boolean):void
 		{
 			_holding = value;

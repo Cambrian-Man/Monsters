@@ -125,10 +125,11 @@
     <property name="state" value="normal"/>
    </properties>
   </object>
-  <object type="blockMonster" x="320" y="80" width="32" height="32">
+  <object type="blockMonster" x="240" y="16" width="32" height="32">
    <properties>
     <property name="size" value="medium"/>
    </properties>
   </object>
+  <object type="balloonMonster" x="352" y="80" width="32" height="32"/>
  </objectgroup>
 </map>

@@ -44,7 +44,7 @@ package com.cambrianman.monsters.monsters
 			{
 				if (collide("player", x, y - 1))
 					(graphic as Spritemap).play("squish");
-				else if (speed.y > 0 && collide("player", x, y + 1) != null)
+				else if (collide("player", x, y + 1) != null)
 				{
 					level.player.y = top - level.player.height;
 				}
@@ -93,7 +93,6 @@ package com.cambrianman.monsters.monsters
 			if (state == FIRE)
 				speed.y = -0.6;
 				
-			
 			return true;
 		}
 		
@@ -137,10 +136,6 @@ package com.cambrianman.monsters.monsters
 			if (state == FIRE)
 			{
 				beNormal();
-			}
-			else if (state == NORMAL)
-			{
-				// Should do something to delete.
 			}
 		}
 	}
