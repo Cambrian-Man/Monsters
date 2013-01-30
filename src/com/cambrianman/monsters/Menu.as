@@ -26,21 +26,18 @@ package com.cambrianman.monsters
 		
 		private var mainMenuItems:Vector.<Entity>;
 		private var controlsMenuItems:Vector.<Entity>;
+		private var keyItems:Vector.<Entity>;
 		
 		private var selectedItem:int = 0;
+		private var keyToSet:int = -1;
 		
 		private var cursor:Entity;
 		
+		private var menu:Vector.<Entity>;
+		
 		public function Menu() 
-		{
-			Data.load("monstersSaveData");
-			
+		{			
 			Text.font = "Mini-Serif";
-
-			createMainMenu();
-			showMainMenu();
-			
-			createControls();
 			
 			cursor = new Entity(64, 0);
 			cursor.graphic = new Spritemap(IMGFIRE, 16, 16);
@@ -48,16 +45,20 @@ package com.cambrianman.monsters
 			(cursor.graphic as Spritemap).play("anim");
 			(cursor.graphic as Spritemap).originY = 4;
 			add(cursor);
-			setCursor(0);
+
+			createMainMenu();
+			createControls();
+			
+			showMainMenu();
 		}
 		
 		private function createMainMenu():void
 		{
-			newGameItem = new Entity(80, 100, new Text("New Game"));
-			
-			continueGameItem = new Entity(80, 120, new Text("Continue Game"));
+			continueGameItem = new Entity(80, 100, new Text("Continue Game"));
 			if (Data.readString("level") == "")
 				(continueGameItem.graphic as Text).alpha = 0.3;
+			
+			newGameItem = new Entity(80, 120, new Text("New Game"));
 				
 			add(continueGameItem);
 			
@@ -68,8 +69,9 @@ package com.cambrianman.monsters
 			add(creditsItem);
 			
 			mainMenuItems = new Vector.<Entity>();
-			mainMenuItems.push(newGameItem);
+
 			mainMenuItems.push(continueGameItem);
+			mainMenuItems.push(newGameItem);
 			mainMenuItems.push(controlsItem);
 			mainMenuItems.push(creditsItem);
 		}
@@ -77,49 +79,54 @@ package com.cambrianman.monsters
 		private function createControls():void
 		{
 			controlsMenuItems = new Vector.<Entity>();
-			var left:Entity = new Entity(32, 40, new Text("Move Left"));
+			keyItems = new Vector.<Entity>();
+			
+			var left:Entity = new Entity(32, 32, new Text("Move Left"));
 			controlsMenuItems.push(left);
 			
-			var leftKey:Entity = new Entity(160, 40, new Text("Left Arrow"));
-			controlsMenuItems.push(leftKey);
+			var leftKey:Entity = new Entity(160, 32, new Text(Key.name(Main.controlKeys.left)));
+			keyItems.push(leftKey);
 			
-			var right:Entity = new Entity(32, 60, new Text("Move Right"));
+			var right:Entity = new Entity(32, 52, new Text("Move Right"));
 			controlsMenuItems.push(right);
 			
-			var rightKey:Entity = new Entity(160, 60, new Text("Right Arrow"));
-			controlsMenuItems.push(rightKey);
+			var rightKey:Entity = new Entity(160, 52, new Text(Key.name(Main.controlKeys.right)));
+			keyItems.push(rightKey);
 
-			var up:Entity = new Entity(32, 80, new Text("Look Up"));
+			var up:Entity = new Entity(32, 72, new Text("Look Up"));
 			controlsMenuItems.push(up);
 			
-			var upKey:Entity = new Entity(160, 80, new Text("Up Arrow"));
-			controlsMenuItems.push(upKey);
+			var upKey:Entity = new Entity(160, 72, new Text(Key.name(Main.controlKeys.up)));
+			keyItems.push(upKey);
 
-			var down:Entity = new Entity(32, 100, new Text("Look Down"));
+			var down:Entity = new Entity(32, 92, new Text("Look Down"));
 			controlsMenuItems.push(down);
 			
-			var downKey:Entity = new Entity(160, 100, new Text("Down Arrow"));
-			controlsMenuItems.push(downKey);
+			var downKey:Entity = new Entity(160, 92, new Text(Key.name(Main.controlKeys.down)));
+			keyItems.push(downKey);
 
-			var jump:Entity = new Entity(32, 120, new Text("Jump"));
+			var jump:Entity = new Entity(32, 112, new Text("Jump"));
 			controlsMenuItems.push(jump);
 			
-			var jumpKey:Entity = new Entity(160, 120, new Text("X"));
-			controlsMenuItems.push(jumpKey);
+			var jumpKey:Entity = new Entity(160, 112, new Text(Key.name(Main.controlKeys.jump)));
+			keyItems.push(jumpKey);
 			
-			var interact:Entity = new Entity(32, 140, new Text("Grab and Throw"));
+			var interact:Entity = new Entity(32, 132, new Text("Grab and Throw"));
 			controlsMenuItems.push(interact);
 			
-			var interactKey:Entity = new Entity(160, 140, new Text("C"));
-			controlsMenuItems.push(interactKey);
+			var interactKey:Entity = new Entity(160, 132, new Text(Key.name(Main.controlKeys.interact)));
+			keyItems.push(interactKey);
 			
-			var reset:Entity = new Entity(32, 160, new Text("Return to Checkpoint"));
+			var reset:Entity = new Entity(32, 152, new Text("Return to Checkpoint"));
 			controlsMenuItems.push(reset);
 			
-			var resetKey:Entity = new Entity(160, 160, new Text("R"));
-			controlsMenuItems.push(resetKey);
+			var resetKey:Entity = new Entity(160, 152, new Text(Key.name(Main.controlKeys.reset)));
+			keyItems.push(resetKey);
 			
-			var back:Entity = new Entity(32, 200, new Text("Back to Main Menu"));
+			var defaults:Entity = new Entity(32, 172, new Text("Use Defaults"));
+			controlsMenuItems.push(defaults);
+			
+			var back:Entity = new Entity(32, 192, new Text("Back to Main Menu"));
 			controlsMenuItems.push(back);
 		}
 		
@@ -127,10 +134,18 @@ package com.cambrianman.monsters
 		{
 			super.update();
 			
+			if (keyToSet >= 0)
+			{
+				if (Input.pressed(Key.ANY))
+					setKey(keyToSet, Input.lastKey);
+				
+				return;
+			}
+			
 			if (Input.pressed(Key.DOWN))
 			{
 				selectedItem++;
-				if (selectedItem > 3)
+				if (selectedItem == menu.length)
 					selectedItem = 0;
 				setCursor(selectedItem);
 			}
@@ -138,7 +153,7 @@ package com.cambrianman.monsters
 			{
 				selectedItem--;
 				if (selectedItem < 0)
-					selectedItem = 3;
+					selectedItem = menu.length - 1;
 				setCursor(selectedItem);
 			}
 			else if (Input.pressed(Key.ANY))
@@ -149,39 +164,111 @@ package com.cambrianman.monsters
 		
 		private function setCursor(loc:int):void
 		{
-			cursor.y = (loc * 20) + 100;
+			var item:Entity = menu[loc];
+			cursor.x = item.x - 20;
+			cursor.y = item.y;
 		}
 		
 		private function selectItem(item:int):void
 		{
-			if (item == 0)
+			if (menu == mainMenuItems) 
 			{
-				FP.world = new Level(true);
+				if (item == 1)
+				{
+					FP.world = new Level(true);
+				}
+				else if (item == 0)
+				{
+					if (!(Data.readString("level") == ""))
+						FP.world = new Level(false);
+				}
+				else if (item == 2)
+				{
+					showControlsMenu();
+				}
+				else if (item == 3)
+				{
+					
+				}
 			}
-			else if (item == 1)
+			else if (menu == controlsMenuItems)
 			{
-				if (!(Data.readString("level") == ""))
-					FP.world = new Level(false);
+				if (item == 7)
+				{
+					Main.setDefaultKeys();
+					(keyItems[0].graphic as Text).text = Key.name(Main.controlKeys.left);
+					(keyItems[1].graphic as Text).text = Key.name(Main.controlKeys.right);
+					(keyItems[2].graphic as Text).text = Key.name(Main.controlKeys.up);
+					(keyItems[3].graphic as Text).text = Key.name(Main.controlKeys.down);
+					(keyItems[4].graphic as Text).text = Key.name(Main.controlKeys.jump);
+					(keyItems[5].graphic as Text).text = Key.name(Main.controlKeys.interact);
+					(keyItems[6].graphic as Text).text = Key.name(Main.controlKeys.reset);
+				}
+				else if (item == 8)
+				{
+					Main.saveKeys();
+					showMainMenu();
+				}
+				else
+				{
+					keyToSet = item;
+					cursor.x = 140;
+				}
 			}
-			else if (item == 2)
+		}
+		
+		private function setKey(key:int, code:int):void
+		{
+			switch (key) 
 			{
-				showControlsMenu();
+				case 0:
+					Main.controlKeys.left = code;
+				break;
+				case 1:
+					Main.controlKeys.right = code;
+				break;
+				case 2:
+					Main.controlKeys.up = code;
+				break;
+				case 3:
+					Main.controlKeys.down = code;
+				break;
+				case 4:
+					Main.controlKeys.jump = code;
+				break;
+				case 5:
+					Main.controlKeys.interact = code;
+				break;
+				case 6:
+					Main.controlKeys.reset = code;
+				break;
 			}
-			else if (item == 3)
-			{
-				
-			}
+			
+			setCursor(key);
+			
+			(keyItems[key].graphic as Text).text = Key.name(code);
+			
+			keyToSet = -1;
 		}
 		
 		private function showMainMenu():void
 		{
+			removeList(controlsMenuItems);
+			removeList(keyItems);
+			menu = mainMenuItems;
+			selectedItem = 0;
+			setCursor(selectedItem);
 			addList(mainMenuItems);
 		}
 		
 		private function showControlsMenu():void
 		{
 			removeList(mainMenuItems);
+			menu = controlsMenuItems;
+			selectedItem = 0;
+			setCursor(selectedItem);
 			addList(controlsMenuItems);
+			addList(keyItems);
 		}
 	}
 

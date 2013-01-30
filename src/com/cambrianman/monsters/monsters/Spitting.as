@@ -32,6 +32,18 @@ package com.cambrianman.monsters.monsters
 			acceleration.y = 0.2;
 		}
 		
+		override public function setState(state:String):void
+		{
+			super.setState(state);
+			
+			if (this.state == Monster.NORMAL)
+				(graphic as Spritemap).play("normal");
+			else if (this.state == Monster.FIRE)
+				(graphic as Spritemap).play("fire");
+			else if (this.state == Monster.WATER)
+				(graphic as Spritemap).play("water");
+		}
+		
 		override public function update():void
 		{
 			if (facing == LEFT)

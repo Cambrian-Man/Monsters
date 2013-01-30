@@ -29,8 +29,12 @@ package com.cambrianman.monsters
 			add(base);
 			
 			normalArms = new Spritemap(IMGNORMALARMS, 32, 32);
+			add(normalArms);
 			
 			holdArms = new Spritemap(IMGHOLDARMS, 32, 32);
+			holdArms.visible = false;
+			add(normalArms);
+			
 			
 			setupAnims();
 		}
@@ -54,17 +58,13 @@ package com.cambrianman.monsters
 			
 			if (_holding)
 			{
-				if (children.length == 2)
-					removeAt(1);
-				
-				add(holdArms);
+				holdArms.visible = true;
+				normalArms.visible = false;
 			}
 			else
 			{
-				if (children.length == 2)
-					removeAt(1);
-					
-				add(normalArms);
+				holdArms.visible = false;
+				normalArms.visible = true;
 			}
 		}
 		

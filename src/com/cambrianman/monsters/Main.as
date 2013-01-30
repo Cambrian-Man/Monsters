@@ -6,6 +6,7 @@ package com.cambrianman.monsters
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
 	import net.flashpunk.utils.Key;
+	import net.flashpunk.utils.Data;
 	
 	/**
 	 * ...
@@ -19,7 +20,28 @@ package com.cambrianman.monsters
 		
 		public function Main():void 
 		{
-			// Set up default keys.
+			Data.load("monstersSaveData");
+			loadKeys();
+			
+			super(256, 224, 60, false);
+			FP.screen.scale = 2;
+			FP.world = new Menu();
+			FP.console.enable();
+		}
+		
+		public static function loadKeys():void
+		{
+			controlKeys.left = Data.readInt("left", Key.LEFT);
+			controlKeys.right = Data.readInt("right", Key.RIGHT);
+			controlKeys.up = Data.readInt("up", Key.UP);
+			controlKeys.down = Data.readInt("down", Key.DOWN);
+			controlKeys.jump = Data.readInt("jump", Key.X);
+			controlKeys.interact = Data.readInt("interact", Key.C);
+			controlKeys.reset = Data.readInt("reset", Key.R);
+		}
+		
+		public static function setDefaultKeys():void
+		{
 			controlKeys.left = Key.LEFT;
 			controlKeys.right = Key.RIGHT;
 			controlKeys.up = Key.UP;
@@ -27,13 +49,19 @@ package com.cambrianman.monsters
 			controlKeys.interact = Key.C;
 			controlKeys.jump = Key.X;
 			controlKeys.reset = Key.R;
-			
-			super(256, 224, 60, false);
-			FP.screen.scale = 2;
-			FP.world = new Menu();
-			//FP.console.enable();
 		}
 		
+		public static function saveKeys():void
+		{
+			Data.writeInt("left", controlKeys.left);
+			Data.writeInt("right", controlKeys.right);
+			Data.writeInt("up", controlKeys.up);
+			Data.writeInt("down", controlKeys.down);
+			Data.writeInt("interact", controlKeys.interact);
+			Data.writeInt("jump", controlKeys.jump);
+			Data.writeInt("reset", controlKeys.reset);
+			Data.save("monstersSaveData");
+		}
 	}
 	
 }

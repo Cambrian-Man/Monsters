@@ -18,6 +18,7 @@ package com.cambrianman.monsters
 	 */
 	public class Level extends World 
 	{
+		[Embed(source = "audio/Winter Snow.mp3")] private const SNDMUSIC:Class;
 		
 		[Embed(source = "levels/tiles.tsx", mimeType = "application/octet-stream")] private const XMLTILESET:Class;
 		[Embed(source = "gfx/environment/tiles.png")] private const IMGTILES:Class;
@@ -74,7 +75,6 @@ package com.cambrianman.monsters
 			
 			if (!newGame)
 			{
-				Data.load("monstersSaveData");
 				player.checkpoint.level = Levels[Data.readString("level", "start")];
 				player.checkpoint.entrance = Data.readString("entrance", "gameStart");
 			}
@@ -99,8 +99,8 @@ package com.cambrianman.monsters
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 
-			//music = new Sfx(SNDMUSIC);
-			//music.loop();
+			music = new Sfx(SNDMUSIC);
+			music.loop();
 		}
 		
 		override public function update():void
@@ -210,6 +210,7 @@ package com.cambrianman.monsters
 			Data.writeString("level", getQualifiedClassName(data).split('_')[1]);
 			Data.writeString("entrance", entrance);
 			Data.save("monstersSaveData");
+			
 			// Clear the old stuff.
 			if (exits)
 				removeList(exits);
