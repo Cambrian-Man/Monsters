@@ -111,10 +111,10 @@
    <properties>
     <property name="entrance" value="left"/>
     <property name="from" value="left"/>
-    <property name="to" value="pushPop"/>
+    <property name="to" value="blockCorridor"/>
    </properties>
   </object>
-  <object name="right" type="entrance" x="592" y="48" width="32" height="32"/>
+  <object name="right" type="entrance" x="608" y="48" width="32" height="32"/>
   <object type="exit" x="240" y="464" width="48" height="16">
    <properties>
     <property name="entrance" value="top"/>

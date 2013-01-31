@@ -114,6 +114,7 @@ package com.cambrianman.monsters.monsters
 			{
 				setOrigin(0, 0);
 			}
+
 				
 			var growDir:int = canGrow();
 			if (growDir == Mobile.NONE)

@@ -7,6 +7,7 @@ package com.cambrianman.monsters.items
 	import net.flashpunk.Graphic;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Mask;
+	import net.flashpunk.Sfx;
 	
 	/**
 	 * Base class for held items.
@@ -30,6 +31,15 @@ package com.cambrianman.monsters.items
 		
 		[Embed(source = "../gfx/items/fire_seed.png")] private const IMGFIRE:Class;
 		[Embed(source = "../gfx/items/water_seed.png")] private const IMGWATER:Class;
+		
+		
+		
+		[Embed(source = "../audio/fireExplode.mp3")] private const SNDFIRE:Class;
+		[Embed(source = "../audio/waterHit.mp3")] private const SNDWATER:Class;
+		
+		protected var waterSound:Sfx;
+		protected var fireSound:Sfx;
+		
 		
 		public function Item() 
 		{
@@ -55,6 +65,12 @@ package com.cambrianman.monsters.items
 			waterGraphic.play("anim");
 			
 			sweep = true;
+			
+			waterSound = new Sfx(SNDWATER);
+			waterSound.type = "effects";
+			
+			fireSound = new Sfx(SNDFIRE);
+			fireSound.type = "effects";
 		}
 		
 		override public function update():void
@@ -181,12 +197,22 @@ package com.cambrianman.monsters.items
 		{
 			if (itemType == FIRE || itemType == FIREDROP)
 			{
+				if (itemType == FIRE)
+					fireSound.play();
+				else if (onCamera)
+					fireSound.play(0.1);
+				
 				level.particles.burstAt(x, y, FIRE);
 				if (e is Monster)
 					(e as Monster).onFire();
 			}
 			else if (itemType == WATER || itemType == WATERDROP)
 			{
+				if (itemType == WATER)
+					waterSound.play();
+				else if (onCamera)
+					waterSound.play(0.1);
+				
 				level.particles.burstAt(x, y, WATER);
 				if (e is Monster)
 					(e as Monster).onWater();

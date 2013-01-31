@@ -24,12 +24,18 @@ package com.cambrianman.monsters
 			Data.load("monstersSaveData");
 			loadKeys();
 			
+			if (!Data.readBool("sound"))
+			{
+				Sfx.setVolume("music", 0);
+				Sfx.setVolume("effects", 0);
+			}
+			
 			Level.music = new Sfx(Level.SNDMUSIC);
 			
 			super(256, 224, 60, false);
 			FP.screen.scale = 2;
 			FP.world = new Menu();
-			FP.console.enable();
+			//FP.console.enable();
 		}
 		
 		public static function loadKeys():void

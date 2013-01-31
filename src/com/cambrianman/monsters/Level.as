@@ -101,12 +101,6 @@ package com.cambrianman.monsters
 			
 			loadLevel(player.checkpoint.level, player.checkpoint.entrance);
 
-			if (!Data.readBool("sound"))
-			{
-				Sfx.setVolume("music", 0);
-				Sfx.setVolume("effects", 0);
-			}
-			
 			music.type = "music";
 			music.loop();
 		}
@@ -215,6 +209,12 @@ package com.cambrianman.monsters
 		 */
 		public function loadLevel(data:Class, entrance:String):void
 		{
+			if (data == End)
+			{
+				FP.world = new End();
+				return;
+			}
+			
 			Data.writeString("level", getQualifiedClassName(data).split('_')[1]);
 			Data.writeString("entrance", entrance);
 			Data.save("monstersSaveData");

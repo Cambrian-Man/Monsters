@@ -23,9 +23,9 @@ package com.cambrianman.monsters.monsters
 			width = 32;
 			height = 16;
 
-			(graphic as Spritemap).add("normal", [0]);
-			(graphic as Spritemap).add("water", [1]);
-			(graphic as Spritemap).add("fire", [2]);
+			(graphic as Spritemap).add("normal", [0, 1, 0, 2], 4, true);
+			(graphic as Spritemap).add("water", [3]);
+			(graphic as Spritemap).add("fire", [4, 5, 6, 5], 8, true);
 			
 			
 			maxSpeed.x = 3;

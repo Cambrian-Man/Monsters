@@ -25,9 +25,8 @@ package com.cambrianman.monsters.monsters
 			height = 32;			
 
 			(graphic as Spritemap).add("normal", [0]);
-			(graphic as Spritemap).add("water", [1]);
-			(graphic as Spritemap).add("fire", [2]);
-			
+			(graphic as Spritemap).add("water", [1, 2, 3], 4);
+			(graphic as Spritemap).add("fire", [4, 5, 6, 5], 8);
 			
 			acceleration.y = 0.2;
 		}

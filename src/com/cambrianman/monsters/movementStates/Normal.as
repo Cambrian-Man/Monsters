@@ -11,6 +11,7 @@ package com.cambrianman.monsters.movementStates
 	import net.flashpunk.tweens.misc.NumTween;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	
 	/**
 	 * Normal movement state, when the player is on the ground.
@@ -18,6 +19,12 @@ package com.cambrianman.monsters.movementStates
 	 */
 	public class Normal implements IMovementState 
 	{
+		[Embed(source = "../audio/pickup.mp3")] private const SNDPICKUP:Class;
+		[Embed(source = "../audio/throw.mp3")] private const SNDTHROW:Class;
+		
+		private var pickup:Sfx;
+		private var throwSound:Sfx;
+		
 		protected var player:Player;
 		protected var sprite:PlayerGraphic;
 		
@@ -35,6 +42,11 @@ package com.cambrianman.monsters.movementStates
 			lookUpTimer = new TriggerTimer(1, lookUp);
 			
 			pushTimer = new TriggerTimer(0.5, push, unpush);
+			
+			pickup = new Sfx(SNDPICKUP);
+			pickup.type = "effects";
+			throwSound = new Sfx(SNDTHROW);
+			throwSound.type = "effects";
 		}
 		
 		/* INTERFACE com.cambrianman.monsters.IMovementState */
@@ -202,6 +214,7 @@ package com.cambrianman.monsters.movementStates
 						(player.held as Item).toss(Mobile.RIGHT);
 						
 					sprite.holding = false;
+					throwSound.play();
 				}
 				else
 				{
@@ -210,6 +223,7 @@ package com.cambrianman.monsters.movementStates
 					{
 						(i as Item).grab();
 						sprite.holding = true;
+						pickup.play();
 					}
 						
 					var m:Entity = player.collideTypes(["monster", "backgroundMonster"], player.x, player.y);

@@ -28,6 +28,8 @@ package com.cambrianman.monsters
 		[Embed(source = "levels/tripleBack.tmx", mimeType = "application/octet-stream")] public static const tripleBack:Class;
 		[Embed(source = "levels/lostWoods.tmx", mimeType = "application/octet-stream")] public static const lostWoods:Class;
 		
+		public static const TheEnd:Class = End;
+		
 		public function Levels() 
 		{
 			

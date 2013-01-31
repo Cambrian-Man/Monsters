@@ -3,6 +3,7 @@ package com.cambrianman.monsters.movementStates
 	import com.cambrianman.monsters.IMovementState;
 	import com.cambrianman.monsters.Player;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.utils.Input;
 	import com.cambrianman.monsters.movementStates.*;
 	import net.flashpunk.FP;
@@ -25,9 +26,13 @@ package com.cambrianman.monsters.movementStates
 		// or start moving down for whatever reason.
 		private var canIncrease:Boolean;
 		
+		[Embed(source = "../audio/jump.mp3")] private var SNDJUMP:Class;
+		private var jump:Sfx;
+		
 		public function Jumping() 
 		{
-			
+			jump = new Sfx(SNDJUMP);
+			jump.type = "effects";
 		}
 		
 		override public function update(keys:Object):Class
@@ -63,6 +68,7 @@ package com.cambrianman.monsters.movementStates
 			canIncrease = true;
 			upTicks = maxUpTicks;
 			player.speed.y = -4;
+			jump.play();
 		}
 		
 		override public function getClass():Class

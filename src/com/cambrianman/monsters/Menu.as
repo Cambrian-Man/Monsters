@@ -5,6 +5,7 @@ package com.cambrianman.monsters
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.World;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
@@ -20,7 +21,16 @@ package com.cambrianman.monsters
 	{
 		// Used for the cursor.
 		[Embed(source = "gfx/items/fire_seed.png")] private const IMGFIRE:Class;
+		
 		[Embed(source = "gfx/title.png")] private const IMGTITLE:Class;
+		[Embed(source = "gfx/credits.png")] private const IMGCREDITS:Class;
+
+		// Sounds
+		[Embed(source = "audio/up_down.mp3")] private const SNDUPDOWN:Class;
+		[Embed(source = "audio/select.mp3")] private const SNDSELECT:Class;
+		
+		private var upDown:Sfx;
+		private var select:Sfx;
 		
 		// Entities for the main menu
 		private var newGameItem:Entity;
@@ -35,6 +45,9 @@ package com.cambrianman.monsters
 		
 		private var selectedItem:int = 0;
 		
+		private var credits:Entity;
+		private var creditsSelected:Boolean = false;
+		
 		// -1 means 'no key'. 
 		private var keyToSet:int = -1;
 		
@@ -48,6 +61,7 @@ package com.cambrianman.monsters
 			Text.font = "Mini-Serif";
 			
 			title = new Entity(0, 0, new Image(IMGTITLE));
+			title.layer = 9;
 			add(title);
 			
 			cursor = new Entity(64, 0);
@@ -57,8 +71,18 @@ package com.cambrianman.monsters
 			(cursor.graphic as Spritemap).originY = 4;
 			add(cursor);
 			
+			upDown = new Sfx(SNDUPDOWN);
+			upDown.type = "effects";
+			select = new Sfx(SNDSELECT);
+			select.type = "effects";
+			
 			createMainMenu();
 			createControls();
+			
+			credits = new Entity(0, 0, new Image(IMGCREDITS));
+			credits.visible = false;
+			credits.layer = 0;
+			add(credits);
 			
 			showMainMenu();
 		}
@@ -95,6 +119,11 @@ package com.cambrianman.monsters
 			mainMenuItems.push(controlsItem);
 			mainMenuItems.push(soundItem);
 			mainMenuItems.push(creditsItem);
+			
+			for each (var _e:Entity in mainMenuItems)
+			{
+				_e.layer = 3;
+			}
 		}
 		
 		/**
@@ -168,10 +197,21 @@ package com.cambrianman.monsters
 				
 				return;
 			}
+			else if (creditsSelected)
+			{
+				if (Input.pressed(Key.ANY))
+				{
+					credits.visible = false;
+					creditsSelected = false;
+				}
+				
+				return;
+			}
 			
 			// Cycles through menu items
 			if (Input.pressed(Key.DOWN))
 			{
+				upDown.play();
 				selectedItem++;
 				if (selectedItem == menu.length)
 					selectedItem = 0;
@@ -179,6 +219,7 @@ package com.cambrianman.monsters
 			}
 			else if (Input.pressed(Key.UP))
 			{
+				upDown.play();
 				selectedItem--;
 				if (selectedItem < 0)
 					selectedItem = menu.length - 1;
@@ -186,6 +227,7 @@ package com.cambrianman.monsters
 			}
 			else if (Input.pressed(Key.ANY))
 			{
+				select.play();
 				selectItem(selectedItem);
 			}
 		}
@@ -228,12 +270,21 @@ package com.cambrianman.monsters
 					{
 						(soundItem.graphic as Text).text = "Enable Sound";
 						Data.writeBool("sound", false);
+						Sfx.setVolume("music", 1.0);
+						Sfx.setVolume("effects", 1.0);
 					}
 					else
 					{
 						(soundItem.graphic as Text).text = "Disable Sound";
 						Data.writeBool("sound", true);
+						Sfx.setVolume("music", 0);
+						Sfx.setVolume("effects", 0);
 					}
+				}
+				else if (item == 4)
+				{
+					creditsSelected = true;
+					credits.visible = true;
 				}
 			}
 			else if (menu == controlsMenuItems)

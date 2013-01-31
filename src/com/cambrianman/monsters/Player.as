@@ -12,10 +12,12 @@ package com.cambrianman.monsters
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Mask;
 	import net.flashpunk.masks.Hitbox;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.tweens.misc.Alarm;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	import com.cambrianman.monsters.movementStates.*;
 	
 	/**
@@ -25,6 +27,7 @@ package com.cambrianman.monsters
 	public class Player extends Mobile 
 	{
 		[Embed(source = "gfx/player.png")] private const PLAYER:Class;
+		[Embed(source = "audio/death.mp3")] private const SNDDEATH:Class;
 		
 		// The player's current movement state.
 		private var movementState:IMovementState;
@@ -60,6 +63,8 @@ package com.cambrianman.monsters
 		};
 		
 		public var sprite:PlayerGraphic;
+		
+		private var death:Sfx;
 
 		/**
 		 * Constructor
@@ -87,6 +92,9 @@ package com.cambrianman.monsters
 			mask = new Hitbox(18, 28, 6, 4);
 			
 			collidables = ["ground", "monster"];
+			
+			death = new Sfx(SNDDEATH);
+			death.type = "effects";
 		}
 		
 		override public function update():void {
@@ -179,6 +187,7 @@ package com.cambrianman.monsters
 			visible = false;
 			alive = false;
 			level.particles.smokeAt(centerX, centerY, Item.FIRE);
+			death.play();
 			super.damage(e, direction);
 		}
 		

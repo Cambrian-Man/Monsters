@@ -7,6 +7,7 @@ package com.cambrianman.monsters.monsters
 	import net.flashpunk.Entity;
 	import net.flashpunk.Graphic;
 	import net.flashpunk.Mask;
+	import net.flashpunk.Sfx;
 	
 	/**
 	 * Base Monster Class
@@ -14,10 +15,12 @@ package com.cambrianman.monsters.monsters
 	 */
 	public class Monster extends Mobile 
 	{
+		
 		public static const FIRE:int = 0;
 		public static const NORMAL:int = 1;
 		public static const WATER:int = 2;
 		
+
 		public var facing:int;
 		
 		public var state:int;
@@ -29,6 +32,8 @@ package com.cambrianman.monsters.monsters
 			type = "monster";
 			layer = 4;
 			state = NORMAL;
+			
+
 		}
 		
 		public function onFire():void
@@ -41,7 +46,6 @@ package com.cambrianman.monsters.monsters
 		public function onWater():void
 		{
 			level.particles.smokeAt(centerX, centerY, Item.WATER);
-			
 			if (state != WATER)
 				state += 1;
 		}
