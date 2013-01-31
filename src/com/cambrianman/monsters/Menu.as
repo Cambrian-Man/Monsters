@@ -269,16 +269,12 @@ package com.cambrianman.monsters
 					if (Data.readBool("sound"))
 					{
 						(soundItem.graphic as Text).text = "Enable Sound";
-						Data.writeBool("sound", false);
-						Sfx.setVolume("music", 1.0);
-						Sfx.setVolume("effects", 1.0);
+						Main.setSound(false);
 					}
 					else
 					{
 						(soundItem.graphic as Text).text = "Disable Sound";
-						Data.writeBool("sound", true);
-						Sfx.setVolume("music", 0);
-						Sfx.setVolume("effects", 0);
+						Main.setSound(true);
 					}
 				}
 				else if (item == 4)

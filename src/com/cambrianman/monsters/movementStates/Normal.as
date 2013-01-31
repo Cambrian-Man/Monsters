@@ -41,7 +41,7 @@ package com.cambrianman.monsters.movementStates
 			lookDownTimer = new TriggerTimer(1, lookDown);
 			lookUpTimer = new TriggerTimer(1, lookUp);
 			
-			pushTimer = new TriggerTimer(0.5, push, unpush);
+			pushTimer = new TriggerTimer(0.25, push, unpush);
 			
 			pickup = new Sfx(SNDPICKUP);
 			pickup.type = "effects";
@@ -97,6 +97,19 @@ package com.cambrianman.monsters.movementStates
 					return Jumping;
 			}
 			
+			var _g:Entity = checkGrip();
+			if (_g)
+			{
+				player.clinging = _g;
+				
+				if (player.held)
+				{
+					player.held.toss(Mobile.DOWN);
+				}
+				
+				return Clinging;
+			}
+				
 			return Normal;
 		}
 		
@@ -131,6 +144,18 @@ package com.cambrianman.monsters.movementStates
 		{
 			lookTween.active = false;
 			player.cameraOffset = 0;
+		}
+		
+		protected function checkGrip():Entity
+		{
+			if (player.clinging)
+			{
+				return null;
+			}
+				
+			var m:Entity = player.collide("grip", player.x, player.y);
+
+			return m;
 		}
 		
 		/**
@@ -224,16 +249,6 @@ package com.cambrianman.monsters.movementStates
 						(i as Item).grab();
 						sprite.holding = true;
 						pickup.play();
-					}
-						
-					var m:Entity = player.collideTypes(["monster", "backgroundMonster"], player.x, player.y);
-					if (m && !player.held)
-					{
-						if (m is Balloon && (m as Monster).state == Monster.FIRE)
-						{
-							player.clinging = m as Monster;
-							return Clinging;
-						}
 					}
 				}
 			}

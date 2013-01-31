@@ -2,6 +2,8 @@ package com.cambrianman.monsters.movementStates
 {
 	import com.cambrianman.monsters.IMovementState;
 	import com.cambrianman.monsters.Player;
+	import com.cambrianman.monsters.Mobile;
+	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.Sfx;
 	import net.flashpunk.utils.Input;
@@ -56,6 +58,19 @@ package com.cambrianman.monsters.movementStates
 				return _ic;	
 			
 			handleAnimation(keys);
+			
+			var _g:Entity = checkGrip();
+			if (_g != null)
+			{
+				player.clinging = _g;
+				
+				if (player.held)
+				{
+					player.held.toss(Mobile.DOWN);
+				}
+				
+				return Clinging;
+			}
 			
 			if (player.onGround && player.speed.y >= 0)
 				return Normal;

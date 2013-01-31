@@ -86,7 +86,6 @@ package com.cambrianman.monsters
 				player.checkpoint.entrance = "gameStart";
 			}
 			
-			
 			particles = new ParticleSystem();	
 			add(particles);
 			particles.level = this;
@@ -366,6 +365,8 @@ package com.cambrianman.monsters
 					break;
 					case "balloonMonster":
 						_m = new Balloon(this, _i.@x, _i.@y);
+						var _g:Entity = (_m as Balloon).getGrip();
+						environment.push(_g);
 						monsters.push(_m);
 					break;
 					case "blockMonster":

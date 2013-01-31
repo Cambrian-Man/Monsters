@@ -17,6 +17,8 @@ package com.cambrianman.monsters.monsters
 	{
 		[Embed(source = "../gfx/enemies/balloon_monster.png")] private const IMGBALLOON:Class;
 		
+		public var grip:Entity;
+		
 		public function Balloon(level:Level, x:Number=0, y:Number=0) 
 		{			
 			graphic = new Spritemap(IMGBALLOON, 32, 32);
@@ -58,6 +60,11 @@ package com.cambrianman.monsters.monsters
 					level.player.x += speed.x;
 				}
 			}
+			else if (state == FIRE)
+			{
+				grip.x = x + 8;
+				grip.y = y + 16;
+			}
 		}
 		
 		override public function onFire():void
@@ -84,6 +91,7 @@ package com.cambrianman.monsters.monsters
 			level.particles.smokeAt(centerX, centerY, Item.FIRE);
 			speed.y = -0.6;
 			pushable = false;
+			grip.collidable = true;
 		}
 		
 		override public function moveCollideX(e:Entity):Boolean 
@@ -105,10 +113,15 @@ package com.cambrianman.monsters.monsters
 			acceleration.y = 0.2;
 			speed.x = 0;
 			pushable = false;
-			if (level.player.clinging == this)
+			
+			if (level.player.clinging == grip)
 				level.player.clinging = null;
+				
 			type = "monster";
 			collidables = ["ground", "monster"];
+			
+			if (grip)
+				grip.collidable = false;
 		}
 		
 		override public function onWater():void
@@ -128,6 +141,7 @@ package com.cambrianman.monsters.monsters
 			state = WATER;
 			pushable = true;
 			drag.x = 0.002;
+			grip.collidable = false;
 			collidables = ["ground", "monster", "player"];
 		}
 		
@@ -137,6 +151,17 @@ package com.cambrianman.monsters.monsters
 			{
 				beNormal();
 			}
+		}
+		
+		public function getGrip():Entity
+		{
+			grip = new Entity(x, y);
+			grip.width = 16;
+			grip.height = 16;
+			grip.type = "grip";
+			grip.collidable = false;
+			
+			return grip;
 		}
 	}
 

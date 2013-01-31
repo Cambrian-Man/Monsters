@@ -38,8 +38,11 @@ package com.cambrianman.monsters.movementStates
 				
 			// When we're clinging, we ignore our normal movement
 			// and attach to the clung-to monster.
-			player.y = player.clinging.y + 24;
-			player.x = player.clinging.x;
+			player.y = player.clinging.bottom - 8;
+			player.x = player.clinging.x - 8;
+			
+			player.speed.x = 0;
+			player.speed.y = 0;
 			
 			// We can change our facing direction while holding on.
 			if (Input.check(keys.left))
@@ -74,7 +77,7 @@ package com.cambrianman.monsters.movementStates
 		
 		public function exit():void
 		{
-			player.clinging = null;
+			
 		}
 		
 		public function getClass():Class 

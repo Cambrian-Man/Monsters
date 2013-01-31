@@ -24,18 +24,14 @@ package com.cambrianman.monsters
 			Data.load("monstersSaveData");
 			loadKeys();
 			
-			if (!Data.readBool("sound"))
-			{
-				Sfx.setVolume("music", 0);
-				Sfx.setVolume("effects", 0);
-			}
+			setSound(Data.readBool("sound"));
 			
 			Level.music = new Sfx(Level.SNDMUSIC);
 			
 			super(256, 224, 60, false);
 			FP.screen.scale = 2;
 			FP.world = new Menu();
-			//FP.console.enable();
+			FP.console.enable();
 		}
 		
 		public static function loadKeys():void
@@ -70,6 +66,22 @@ package com.cambrianman.monsters
 			Data.writeInt("jump", controlKeys.jump);
 			Data.writeInt("reset", controlKeys.reset);
 			Data.save("monstersSaveData");
+		}
+		
+		public static function setSound(enabled:Boolean):void
+		{
+			if (enabled)
+			{
+				Sfx.setVolume("music", 1.0);
+				Sfx.setVolume("effects", 1.0);
+			}
+			else
+			{
+				Sfx.setVolume("music", 0);
+				Sfx.setVolume("effects", 0);
+			}
+			
+			Data.writeBool("sound", enabled);
 		}
 	}
 	

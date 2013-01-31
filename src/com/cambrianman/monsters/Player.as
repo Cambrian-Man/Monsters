@@ -49,7 +49,7 @@ package com.cambrianman.monsters
 		
 		public var held:Item;
 		
-		public var clinging:Monster;
+		public var clinging:Entity;
 		
 		public var pushing:Mobile;
 		
@@ -129,6 +129,15 @@ package com.cambrianman.monsters
 					pushing = null;
 				else if (facing == LEFT && x < pushing.x)
 					pushing = null;
+			}
+			
+			// Don't let us re-grab the same grip until we've cleared it.
+			if (clinging && !(movementState is Clinging))
+			{
+				if (!collideWith(clinging, x, y))
+				{
+					clinging = null;
+				}
 			}
 		}
 		

@@ -38,6 +38,9 @@ package com.cambrianman.monsters.movementStates
 			if (player.bottom <= player.pushing.top)
 				return Normal;
 				
+			if (Input.pressed(keys.jump))
+				return Jumping;
+				
 			if (pushDir == Mobile.RIGHT)
 			{
 				if (Input.pressed(keys.left))
